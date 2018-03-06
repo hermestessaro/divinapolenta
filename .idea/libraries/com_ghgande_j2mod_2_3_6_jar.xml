@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="com.ghgande:j2mod:2.3.6@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ghgande/j2mod/2.3.6/b507a8f842ecff2d6e7d9c069a9000a2886ea644/j2mod-2.3.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ghgande/j2mod/2.3.6/b3ea7a43dee3fec304b8696839c15e4a0b886935/j2mod-2.3.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
