@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 public class GetOperadores {
     private ArrayList<String[]> dados;
     private String[] operador;
-    String url = "http://kampeki.develop.fluidobjects.com/get_operadores";
+    String url = "http://divinapolenta.cloud.fluidobjects.com/get_operadores";
 
     public GetOperadores() {
         dados = new ArrayList<String[]>();

@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 public class cerveja {
     int id;
     int nid;
-    int id_automatize;
     String title;
     String type;
     String descricao;
@@ -26,9 +25,6 @@ public class cerveja {
     public void setId(String i)
     {
         id = Integer.parseInt(i);
-    }
-    public void setIdAutomatize(String i) {
-        id_automatize = Integer.parseInt(i);
     }
     public void setNid(String i)
     {
@@ -78,7 +74,6 @@ public class cerveja {
     public int getNid(){
         return nid;
     }
-    public int getIdAutomatize() { return id_automatize; }
     public String getTitle(){
         return title;
     }

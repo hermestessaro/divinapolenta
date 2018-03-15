@@ -13,7 +13,7 @@ import java.net.URL;
 public class GetChopeiraById {
 
 
-    String url = "http://kampeki.develop.fluidobjects.com/get_chopeiras";
+    String url = "http://divinapolenta.cloud.fluidobjects.com/get_chopeiras";
     String item;
     String id_chopeira;
     int id_cerveja;

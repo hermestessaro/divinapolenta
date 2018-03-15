@@ -49,8 +49,8 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operador);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.action_bar);
+        //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        //getSupportActionBar().setCustomView(R.layout.action_bar);
         torneira = new chopeira();
         getChopeira = new GetChopeiraById();
     }
@@ -59,7 +59,7 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
     public void onResume() {
         super.onResume();
         selectChopeira();
-        String id_chopeira = PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CHOPEIRA", "1");
+        String id_chopeira = PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CHOPEIRA", "0");
 
         idNovaChopeira = id_chopeira;
 
@@ -151,7 +151,7 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
         jobj.put("data", currentTime);
         String data = jobj.toString();
 
-        String url = "http://kampeki.develop.fluidobjects.com/abastece_barril";
+        String url = "http://divinapolenta.cloud.fluidobjects.com/abastece_barril";
         ExportJSON.sendJSON(url,data);
     }
 

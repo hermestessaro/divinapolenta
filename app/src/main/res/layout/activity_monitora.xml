@@ -1,121 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_monitora"
+    android:background="@drawable/fundo_inteiro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="br.com.httpfluidobjects.appdivinapolenta.MonitoraActivity">
 
-    <TextView
-        android:text="Tela de Monitoramento"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/fakeToolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:textSize="34sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <TextView
-        android:text="Número da chopeira: "
-        android:textSize="27sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/txtNomeChopeira"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/bigode"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="3"
+            app:srcCompat="@drawable/bigodudo" />
 
-    <TextView
-        android:text="Volume no barril: "
-        android:textSize="27sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txtVolumeBarril"
-        android:layout_below="@+id/txtNomeChopeira"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="363dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="1"
+            android:text="Tela de Monitoramento"
+            android:textColor="@android:color/white"
+            android:textSize="40sp" />
 
-    <TextView
-        android:text="Status da servida:  "
-        android:textSize="27sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txtStatusBatelada"
-        android:layout_below="@+id/txtVolumeBarril"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Status da chopeira:  "
-        android:textSize="27sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txtStatusChopeira"
-        android:layout_below="@+id/txtStatusBatelada"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Vazão:  "
-        android:textSize="27sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txtVazao"
-        android:layout_below="@+id/txtStatusChopeira"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Válvula solenoide:  "
-        android:textSize="27sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txtStatusVs"
-        android:layout_below="@+id/txtVazao"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Fator de multiplicacao:  "
-        android:textSize="27sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txtMultFator"
-        android:layout_below="@+id/txtStatusVs"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Volume consumido ao simular servida:  "
-        android:textSize="27sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txtVolumeConsumido"
-        android:layout_below="@+id/txtMultFator"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    </LinearLayout>
 
 
-    <Button
-        android:text="Simular Servida"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/inputScreen"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
-        android:id="@+id/btnSimular"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="simulaServida" />
+        android:layout_below="@+id/fakeToolbar"
+        android:layout_margin="20dp"
+        android:background="@drawable/input_screen_border">
+
+        <TextView
+            android:id="@+id/txtNomeChopeira"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="30dp"
+            android:text="Número da chopeira: "
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtVolumeBarril"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtNomeChopeira"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
+            android:text="Volume no barril: "
+            android:textColor="@android:color/black"
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/txtStatusBatelada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtVolumeBarril"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
+            android:text="Status da servida:  "
+            android:textColor="@android:color/black"
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/txtStatusChopeira"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtStatusBatelada"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
+            android:text="Status da chopeira:  "
+            android:textColor="@android:color/black"
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/txtVazao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtStatusChopeira"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
+            android:text="Vazão:  "
+            android:textColor="@android:color/black"
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/txtStatusVs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtVazao"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
+            android:text="Válvula solenoide:  "
+            android:textColor="@android:color/black"
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/txtMultFator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtStatusVs"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
+            android:text="Fator de multiplicacao:  "
+            android:textColor="@android:color/black"
+            android:textSize="27sp" />
+
+        <TextView
+            android:id="@+id/txtVolumeConsumido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtMultFator"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
+            android:text="Volume consumido ao simular servida:  "
+            android:textColor="@android:color/black"
+            android:textSize="27sp" />
+
+        <Button
+            android:id="@+id/btnSimular"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtVolumeConsumido"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="48dp"
+            android:background="@drawable/botao_salvar"
+            android:onClick="simulaServida"
+            android:text="Simular Servida"
+            android:textColor="@android:color/white"
+            android:textSize="28sp" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

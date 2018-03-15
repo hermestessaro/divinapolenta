@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppChopeiraKampeki</string>
+    <string name="app_name">AppDivinaPolenta</string>
     <string name="start_screen_first_message">1 - Conecte o tablet no leitor via Bluetooth.</string>
     <string name="start_screen_second_message">2 - Passe o cartão de operador para iniciar o serviço.</string>
 </resources>

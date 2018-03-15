@@ -277,7 +277,7 @@ public class CLPManager {
         jobj.put("data", currentTime);
         String data = jobj.toString();
 
-        String url = "http://kampeki.develop.fluidobjects.com/json/put";
+        String url = "http://divinapolenta.cloud.fluidobjects.com/json/put";
         ExportJSON.sendJSON(url, data);
     }
 

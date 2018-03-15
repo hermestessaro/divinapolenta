@@ -37,14 +37,14 @@ public class IntegracaoAutomatize {
     static void geraItemPedido(cerveja ceva, int volume, int idPedido) throws JSONException { //colhe as informações para montar um pedido
         int id = 0;
         int codigo = 0;
-        int id_item = ceva.getIdAutomatize();
+        //int id_item = ceva.getIdAutomatize();
         int quantidade = 1;
         double total = (1.0 * volume/100) * ceva.getValor();
         double unitario = ceva.getValor();
 
-        ItemPedido novo_item = new ItemPedido(id, codigo, id_item, quantidade, total, unitario);
+        //ItemPedido novo_item = new ItemPedido(id, codigo, id_item, quantidade, total, unitario);
 
         //recolhe o id do pedido
-        export(novo_item, idPedido, ceva.getIdAutomatize()); //manda o item e o id do pedido
+        //export(novo_item, idPedido, ceva.getIdAutomatize()); //manda o item e o id do pedido
     }
 }

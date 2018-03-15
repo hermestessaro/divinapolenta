@@ -29,8 +29,8 @@ public class IniciaServicoActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.action_bar);
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        getSupportActionBar().setCustomView(R.layout.action_bar);
 
         Log.d("ADM", "on create");
         entrada="";

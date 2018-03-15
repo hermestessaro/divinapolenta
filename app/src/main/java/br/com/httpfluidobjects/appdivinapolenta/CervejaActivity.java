@@ -1,11 +1,13 @@
 package br.com.httpfluidobjects.appdivinapolenta;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -45,7 +47,8 @@ public class CervejaActivity extends AppCompatActivity {
     double valor;
     TextView txtVolume;
     TextView txtValor;
-    TextView name;
+    TextView linha1;
+    TextView linha2;
     TextView txtSeBeber;
     double valorCeva;
     boolean finaliza;
@@ -63,16 +66,31 @@ public class CervejaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cerveja);
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.action_bar);
+        //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        //getSupportActionBar().setCustomView(R.layout.action_bar);
         retriveSavedImage();
-        cevaId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CERVEJA", "1"));
-        cevaId = 1;
-        chopeiraId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CHOPEIRA", "1"));
-        chopeiraNid = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("NID_CHOPEIRA", "1"));
+        cevaId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CERVEJA", "0"));
+        //cevaId = 1;
+        chopeiraId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CHOPEIRA", "0"));
+        chopeiraNid = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("NID_CHOPEIRA", "0"));
         Log.d("ADM", String.valueOf(chopeiraId));
 
-        getJSON("http://kampeki.develop.fluidobjects.com/get_cervejas");
+        if(cevaId != 0 && chopeiraId != 0)
+            getJSON("http://divinapolenta.cloud.fluidobjects.com/get_cervejas");
+        else{
+            new AlertDialog.Builder(this)
+                    .setTitle("Nenhuma chopeira selecionada!")
+                    .setMessage("Por favor, peça ao operador que selecione uma chopeira.")
+                    .setNeutralButton("ok",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(CervejaActivity.this, OperadorActivity.class);
+                                    startActivity(intent);
+                                }
+                            }).show();
+
+        }
 
 
     }
@@ -114,7 +132,7 @@ public class CervejaActivity extends AppCompatActivity {
                     JSONArray jsonArray = jsonObj.getJSONArray("cervejas");
 
                     int y = jsonArray.length();
-                    String urlImagem = "http://kampeki.develop.fluidobjects.com/sites/kampeki.develop.fluidobjects.com/files/";
+                    String urlImagem = "http://divinapolenta.cloud.fluidobjects.com/sites/divinapolenta.cloud.fluidobjects.com/files/";
 
                     for (int i = 0; i < y; i++) {
                         JSONObject jsonCervejaObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
@@ -125,7 +143,6 @@ public class CervejaActivity extends AppCompatActivity {
                             ceva = new cerveja();
                             ceva.setNid(jsonCervejaObject.getString("nid"));
                             ceva.setId(jsonCervejaObject.getString("vid"));
-                            ceva.setIdAutomatize(jsonCervejaObject.getString("id_automatize"));
                             ceva.setTitle(jsonCervejaObject.getString("title"));
                             ceva.setType(jsonCervejaObject.getString("type"));
                             ceva.setDescricao(jsonCervejaObject.getString("descricao"));
@@ -183,24 +200,19 @@ public class CervejaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cerveja);
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(String.valueOf(ceva.getTitle()));
-        TextView desc = (TextView) findViewById(R.id.textView2);
+        TextView desc = (TextView) findViewById(R.id.descricao);
         desc.setText(String.valueOf(ceva.getDescricao()));
-        TextView ab = (TextView) findViewById(R.id.teorAlcoolico);
+        TextView ab = (TextView) findViewById(R.id.teor);
         ab.setText("Teor Alcoólico: " + String.valueOf(ceva.getAb()));
         TextView valor = (TextView) findViewById(R.id.valor);
         valor.setText("R$ " + String.valueOf(ceva.getValor()) + " / 100ml");
-        TextView ibu = (TextView) findViewById(R.id.ibu);
-        ibu.setText("IBU: " + String.valueOf(ceva.getIbu()));
         TextView ebc = (TextView) findViewById(R.id.ebc);
-        ebc.setText("EBC: " + String.valueOf(ceva.getEbc()));
-        //http://kampeki.develop.fluidobjects.com/sites/kampeki.develop.fluidobjects.com/files/cappucccino.jpeg
+        ebc.setText("IBU: " + String.valueOf(ceva.getIbu()) + "| EBC: " + String.valueOf(ceva.getEbc()));
         ImageView imagem = (ImageView) findViewById(R.id.imageView3);
         imagem.setImageBitmap(ceva.getImageBM());
         this.valorCeva = ceva.getValor();
-        name = (TextView) findViewById(R.id.nameTxtView);
-        txtVolume = (TextView) findViewById(R.id.volumeTxtView);
-        txtValor = (TextView) findViewById(R.id.valorTxtView);
-        txtSeBeber = (TextView) findViewById(R.id.txtSeBeber);
+        linha1 = (TextView) findViewById(R.id.linha1);
+        linha2 = (TextView) findViewById(R.id.linha2);
         entrada = "";
     }
 
@@ -259,9 +271,9 @@ public class CervejaActivity extends AppCompatActivity {
         Log.d("fcfsd", infoPedido[1]);
         Log.d("teste", "terminou busca");*/
 
-        if(i != 0){
-        name.setText("Cliente: Gabriel");}
-        else {name.setText("Cliente: Carla");}
+        //if(i != 0){
+//        name.setText("Cliente: Gabriel");}
+//        else {name.setText("Cliente: Carla");}
         txtVolume.setText("Serviu: ");
         txtValor.setText("Valor: R$ ");
         txtSeBeber.setText("");
@@ -370,7 +382,7 @@ public class CervejaActivity extends AppCompatActivity {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        name.setText("Passe o cartão");
+                        //name.setText("Passe o cartão");
                         txtVolume.setText("");
                         txtValor.setText("Sirva-se à vontade");
                          txtSeBeber.setText("Se beber, não dirija!");
