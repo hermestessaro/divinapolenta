@@ -368,7 +368,6 @@ public class CervejaActivity extends AppCompatActivity {
                             mHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-
                                     // finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
                             // int vol = clpManager.monitorsCLP(this);
                             volume = i;
