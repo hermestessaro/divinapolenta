@@ -12,57 +12,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/linhaVermelha"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/fundo_tela_cerveja">
+        android:background="@drawable/fundo_sem_rotulo">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/ebc"
+            android:layout_above="@+id/teor"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="TIPO: PILSEN"
             android:textAlignment="center"
             android:textColor="@android:color/holo_red_light"
             android:textSize="26sp"
             android:textStyle="normal|bold" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            app:srcCompat="@drawable/cerveja01" />
-        <!--android:layout_above="@+id/descricao"-->
-        <!--android:layout_alignRight="@+id/descricao"-->
-
-        <TextView
-            android:id="@+id/descricao"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="200dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginRight="40dp"
-            android:text="Produzida com ingredientes 100% naturais, sem conservantes, com uma fórmula que se tornou sinônimo de simplicidade e perfeição: água, malte, lúpulo e nada mais."
-            android:textAlignment="center"
-            android:textSize="16sp" />
-        <!--android:layout_above="@+id/alergicos"-->
 
         <TextView
             android:id="@+id/teor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/title"
-            android:layout_alignStart="@+id/title"
-            android:layout_alignTop="@+id/descricao"
-            android:layout_marginTop="8dp"
+            android:layout_above="@+id/ebc"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
             android:text="Teor Alcoólico: 5.0%"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -72,10 +49,13 @@
             android:id="@+id/ebc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView3"
+            android:layout_above="@+id/valor"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
             android:text="IBU: 5 | EBC: 7"
-            android:layout_alignLeft="@+id/title"
-            android:layout_alignStart="@+id/title"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -84,10 +64,12 @@
             android:id="@+id/valor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/title"
-            android:layout_alignStart="@+id/title"
-            android:layout_below="@+id/teor"
-            android:layout_marginTop="40dp"
+            android:layout_above="@+id/alergicos"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
             android:text="R$: 4,00 / 100ml"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -95,14 +77,55 @@
 
         <TextView
             android:id="@+id/alergicos"
-            android:layout_width="140dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/valor"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/valor"
-            android:layout_marginBottom="23dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="50dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="20dp"
             android:text="ALÉRGICOS: CONTÉM CEVADA, GLÚTEN."
             android:textSize="15sp" />
+
+        <RelativeLayout
+            android:id="@+id/rotulo_amarelo"
+            android:layout_width="250dp"
+            android:layout_height="450dp"
+            android:layout_alignBottom="@+id/alergicos"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/fundo_rotulo"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/descricao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginStart="20dp"
+                android:text="Produzida com ingredientes 100% naturais, sem conservantes, com uma fórmula que se tornou sinônimo de simplicidade e perfeição: água, malte, lúpulo e nada mais."
+                android:textAlignment="center"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="160dp"
+            android:layout_above="@+id/rotulo_amarelo"
+            android:layout_alignLeft="@+id/rotulo_amarelo"
+            android:layout_alignRight="@+id/rotulo_amarelo"
+            android:layout_marginBottom="-50dp"
+            app:srcCompat="@drawable/cerveja01" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -110,8 +133,6 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:background="@android:color/holo_red_light">
 
         <TextView
