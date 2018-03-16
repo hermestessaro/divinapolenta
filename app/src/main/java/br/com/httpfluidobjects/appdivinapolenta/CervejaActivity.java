@@ -274,9 +274,8 @@ public class CervejaActivity extends AppCompatActivity {
         //if(i != 0){
 //        name.setText("Cliente: Gabriel");}
 //        else {name.setText("Cliente: Carla");}
-        txtVolume.setText("Serviu: ");
-        txtValor.setText("Valor: R$ ");
-        txtSeBeber.setText("");
+        linha1.setText("Olá!, sirva-se à vontade");
+        linha2.setText("Valor: R$ 0,00");
         finaliza = false;
 
 
@@ -316,7 +315,7 @@ public class CervejaActivity extends AppCompatActivity {
                          //   volume = clpManager.getVolume(); //pega o volume registrado em tempo real
                             finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
                             if (!String.valueOf(vol).equals(txtVolume.getText())) { //Verifica se houve alteração no volume
-                                txtVolume.setText(String.valueOf("Serviu: " + vol + "ml")); //atualiza a interface
+                                linha1.setText(String.valueOf("Serviu: " + vol + "ml")); //atualiza a interface
                                 //txtValor.setText("Valor: R$ " + getValorStr());
                             }
 
@@ -371,8 +370,8 @@ public class CervejaActivity extends AppCompatActivity {
                                     // finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
                             // int vol = clpManager.monitorsCLP(this);
                             volume = i;
-                            txtVolume.setText(String.valueOf("Serviu: " + String.valueOf(i) + "ml")); //atualiza a interface
-                            txtValor.setText("Valor: R$ " + getValorStr(i));
+                            linha1.setText(String.valueOf("Serviu: " + String.valueOf(i) + "ml")); //atualiza a interface
+                            linha2.setText("Valor: R$ " + getValorStr(i));
                                 }
                             });
                             sleep(150);
@@ -382,9 +381,8 @@ public class CervejaActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //name.setText("Passe o cartão");
-                        txtVolume.setText("");
-                        txtValor.setText("Sirva-se à vontade");
-                         txtSeBeber.setText("Se beber, não dirija!");
+                        linha1.setText("Sirva-se à vontade");
+                         linha2.setText("Se beber, não dirija!");
                     }
                 });
                         //  }
