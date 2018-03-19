@@ -52,8 +52,8 @@ public class GetIdPedidoAutomatize {
 
             JSONObject jsonObj = new JSONObject(s);
             idPedido = jsonObj.getString("id");
-            if (!jsonObj.getString("cliente").equals("null")) {
-                nomeCliente = jsonObj.getString("cliente");
+            if (!jsonObj.getString("br.com.httpfluidobjects.appdivinapolenta.cliente").equals("null")) {
+                nomeCliente = jsonObj.getString("br.com.httpfluidobjects.appdivinapolenta.cliente");
             }
             infoPedido[0] = idPedido;
             infoPedido[1] = nomeCliente;

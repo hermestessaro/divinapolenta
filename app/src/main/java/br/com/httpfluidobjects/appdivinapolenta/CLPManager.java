@@ -95,22 +95,20 @@ public class CLPManager {
 
 
 
-    public int monitorsCLP(CervejaActivity cevaAct) {
+    public int monitorsCLP() {
         int volumeLido = master.readRegister(VOLUME_REG);
         if (volume < volumeLido) volume = volumeLido;
 
         this.statusBatelada = master.readRegister(BATELADA_REG);
-        //cevaAct.atualizaInfoPedido(volume);
 
-        if (this.statusBatelada == 3) {
-            Log.d("teste", "encerrou batelada");
-            master.writeRegisters(BATELADA_REG, 4);
-            this.statusBatelada = 4;
-            return 1;
-        }
+//        if (this.statusBatelada == 3) {
+//            Log.d("teste", "encerrou batelada");
+//            master.writeRegisters(BATELADA_REG, 4);
+//            this.statusBatelada = 4;
+//            return 0;
+//        }
+
         Log.d("teste", "listening");
-        sleep(1000);
-        //return monitorsCLP(cevaAct);
         return volume;
     }
 
@@ -120,7 +118,11 @@ public class CLPManager {
     }
 
     public boolean finalizou() {
-        if (statusBatelada == 4) return true;
+        if (statusBatelada == 3){
+            master.writeRegisters(BATELADA_REG, 4);
+            this.statusBatelada = 4;
+            return true;
+        }
         return false;
     }
 
