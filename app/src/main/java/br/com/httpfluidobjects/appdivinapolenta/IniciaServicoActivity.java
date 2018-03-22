@@ -6,14 +6,12 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +28,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
     BluetoothSocket mmSocket;
     OutputStream mmOutputStream;
     InputStream mmInputStream;
-    ArrayList<String[]> dadosOperadores;
+    ArrayList<operador[]> dadosOperadores;
     MasterTest master;
     Thread workerThread;
     byte[] readBuffer;
@@ -58,12 +56,12 @@ public class IniciaServicoActivity extends AppCompatActivity {
 
         master = new MasterTest("192.168.15.7", 502);
 
-        findBT();
+       /* findBT();
         try {
             openBT();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -164,8 +162,9 @@ public class IniciaServicoActivity extends AppCompatActivity {
                                             Log.d("data", data);
                                             StringBuffer sb = new StringBuffer(data);
                                             sb.reverse();
-                                            for(String[] item: dadosOperadores) {
-                                                if (sb.equals(item[0])) {//se cartao de operador dispara a ativity operador
+                                            int i = 0;
+                                            for(i=0; i<dadosOperadores.size(); i++) {
+                                                if (sb.equals(dadosOperadores.get(i))) {//se cartao de operador dispara a ativity operador
                                                     Log.d("TAD3", sb.toString());
                                                     showButtons();
                                                     break;
@@ -204,26 +203,31 @@ public class IniciaServicoActivity extends AppCompatActivity {
         mmSocket.close();
     }
 
-    /*@Override
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) { //ao passar o cartão lê cada caractere como uma tecla, chamando a função 8 vezes
 
         char pressedKey = (char) event.getUnicodeChar();
         entrada += Character.toString(pressedKey);//armazena cada caractere na variável entrada
-        //Log.d("TAD", entrada);
-        if(entrada.length() == 8){
-            //Log.d("TAD2", entrada);//quando ler os 8 caracteres começa a monitorar a batelada
-            for(String[] item: dadosOperadores){
-                if(entrada.equals(item[0])) {//se cartao de operador dispara a ativity operador
-                    // Log.d("TAD3", entrada);
-                    showButtons();
-                    break;
-                }
+        Log.d("TAD", entrada);
 
-            }
-            entrada="";
-        }
+        //gambiarra pra pular leitura de cartao
+        showButtons();
+
+//        if(entrada.length() == 8){
+//            //Log.d("TAD2", entrada);//quando ler os 8 caracteres começa a monitorar a batelada
+//            int i = 0;
+//            for(i = 0; i<dadosOperadores.size(); i++){
+//                if(entrada.equals(dadosOperadores.get(i))) {//se cartao de operador dispara a ativity operador
+//                    // Log.d("TAD3", entrada);
+//                    showButtons();
+//                    break;
+//                }
+//
+//            }
+//            entrada="";
+//        }
         return super.onKeyDown(keyCode, event);
-    }*/
+    }
 
     public void btnEntraOp(View view) {
         Intent intent = new Intent(IniciaServicoActivity.this, OperadorActivity.class);

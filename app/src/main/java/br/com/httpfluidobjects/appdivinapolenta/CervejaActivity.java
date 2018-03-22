@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,8 +34,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import android.os.Handler;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import static android.os.SystemClock.sleep;
 
@@ -81,8 +85,6 @@ public class CervejaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cerveja);
 
-        //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        //getSupportActionBar().setCustomView(R.layout.action_bar);
         retriveSavedImage();
         cevaId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CERVEJA", "0"));
         //cevaId = 1;
@@ -90,8 +92,13 @@ public class CervejaActivity extends AppCompatActivity {
         chopeiraNid = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("NID_CHOPEIRA", "0"));
         Log.d("ADM", String.valueOf(chopeiraId));
 
-        if(cevaId != 0 && chopeiraId != 0)
-            getJSONCervejas("http://divinapolenta.cloud.fluidobjects.com/get_cervejas");
+
+        //TODO: verificar se ha conexao com a internet
+
+        if(cevaId != 0 && chopeiraId != 0) {
+            getJSONCervejasSincrono("http://divinapolenta.cloud.fluidobjects.com/get_cervejas");
+            showBeer();
+        }
         else{
             new AlertDialog.Builder(this)
                     .setTitle("Nenhuma chopeira selecionada!")
@@ -106,13 +113,18 @@ public class CervejaActivity extends AppCompatActivity {
                             }).show();
 
         }
-        findBT();
+
         try {
-            openBT();
-        } catch (IOException e) {
+            preparesCLP("E062F187");
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-
+//        findBT();
+//        try {
+//            openBT();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -200,6 +212,65 @@ public class CervejaActivity extends AppCompatActivity {
         gj.execute(url);
     }
 
+
+    private void getJSONCervejasSincrono(String uri){
+
+        BufferedReader bufferedReader = null;
+        try {
+            URL url = new URL(uri);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            StringBuilder sb = new StringBuilder();
+
+            bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String json;
+
+            while ((json = bufferedReader.readLine()) != null) {
+                sb.append(json + "\n");
+            }
+
+            sb.append("");
+            String s = sb.toString().trim();
+
+            JSONObject jsonObj = new JSONObject(s);
+            JSONArray jsonArray = jsonObj.getJSONArray("cervejas");
+
+            int y = jsonArray.length();
+            String urlImagem = "http://divinapolenta.cloud.fluidobjects.com/sites/divinapolenta.cloud.fluidobjects.com/files/";
+
+            for (int i = 0; i < y; i++) {
+                JSONObject jsonCervejaObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
+
+                if (Integer.parseInt(jsonCervejaObject.getString("vid")) == cevaId) { //Encontra a cervaja de id = cevaId
+                    urlImagem = urlImagem + jsonCervejaObject.getString("logo_name");
+                    Bitmap logo;
+                    ceva = new cerveja();
+                    ceva.setNid(jsonCervejaObject.getString("nid"));
+                    ceva.setId(jsonCervejaObject.getString("vid"));
+                    ceva.setTitle(jsonCervejaObject.getString("title"));
+                    ceva.setType(jsonCervejaObject.getString("type"));
+                    ceva.setDescricao(jsonCervejaObject.getString("descricao"));
+                    ceva.setFabricante(jsonCervejaObject.getString("fabricante"));
+                    ceva.setEbc(jsonCervejaObject.getString("ebc"));
+                    ceva.setConsumo(jsonCervejaObject.getString("consumo"));
+                    ceva.setIbu(jsonCervejaObject.getString("ibu"));
+                    ceva.setValor(jsonCervejaObject.getString("valor"));
+                    ceva.setLogo_name(jsonCervejaObject.getString("logo_name"));
+                    ceva.setLogo_uri(jsonCervejaObject.getString("logo_uri"));
+                    ceva.setAb(jsonCervejaObject.getString("ab"));
+                    logo = getBitmapFromURL(urlImagem);
+                    ceva.setImageBM(logo);
+                    saveLogo(logo);
+                    break;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     //Conecta com a url e busca as cervejas
     private void getJSONClientes(String url, final String cartao) {
         class GetJSON extends AsyncTask<String, Void, String> {
@@ -237,6 +308,7 @@ public class CervejaActivity extends AppCompatActivity {
                     JSONArray jsonArray = jsonObj.getJSONArray("clientes");
 
                     int y = jsonArray.length();
+                    int achou = 0;
 
                     for (int i = 0; i < y; i++) {
                         JSONObject jsonClienteObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
@@ -248,10 +320,15 @@ public class CervejaActivity extends AppCompatActivity {
                             cliente.setId(Integer.parseInt(jsonClienteObject.getString("id")));
                             cliente.setNome(jsonClienteObject.getString("nome"));
                             cliente.setValid(true);
+                            achou = 1;
                         }
 
 
                         break;
+                    }
+                    if(achou == 0){
+                        cliente = new cliente();
+                        cliente.setValid(false);
                     }
 
                     return s;
@@ -271,6 +348,59 @@ public class CervejaActivity extends AppCompatActivity {
         GetJSON gj = new GetJSON();
         gj.execute(url);
     }
+
+    private void getJSONClientesSincrono(String uri, final String cartao){
+        BufferedReader bufferedReader = null;
+        try {
+            URL url = new URL(uri);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            StringBuilder sb = new StringBuilder();
+
+            bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String json;
+
+            while ((json = bufferedReader.readLine()) != null) {
+                sb.append(json + "\n");
+            }
+
+            sb.append("");
+            String s = sb.toString().trim();
+
+            JSONObject jsonObj = new JSONObject(s);
+            JSONArray jsonArray = jsonObj.getJSONArray("cliente");
+
+            int y = jsonArray.length();
+            int achou = 0;
+
+            for (int i = 0; i < y; i++) {
+                JSONObject jsonClienteObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
+
+                if(cartao.equals(jsonClienteObject.getString("cartao"))){
+                    cliente = new cliente();
+                    cliente.setCartao(cartao);
+                    cliente.setCpf(jsonClienteObject.getString("cpf"));
+                    cliente.setId(Integer.parseInt(jsonClienteObject.getString("id")));
+                    cliente.setNome(jsonClienteObject.getString("nome"));
+                    cliente.setSaldo(Float.parseFloat(jsonClienteObject.getString("saldo")));
+                    cliente.setValid(true);
+                    achou = 1;
+                }
+
+
+                break;
+            }
+            if(achou == 0){
+                cliente = new cliente();
+                cliente.setValid(false);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //Conecta numa url e baixa a logo da cerveja
     public Bitmap getBitmapFromURL(String src) {
@@ -453,37 +583,19 @@ public class CervejaActivity extends AppCompatActivity {
 
     //------------- CLP -----------//
 
-    public void preparesCLP(String idCartao) throws JSONException { //executa ao clicar no botão (passar cartão)
-
+    public void preparesCLP(final String idCartao) throws JSONException { //executa ao clicar no botão (passar cartão)
 
         Log.d("preparesCLP", "recebeu id do cartao" + idCartao);
 
-        //GetIdPedidoAutomatize requisitor = new GetIdPedidoAutomatize();
-
-        /*Log.d("teste", "irá buscar informações do pedido na automatize");
-        String[] infoPedido = requisitor.runRequisition(400); //a partir do codigo do cartao pega o id do pedido(infoPedido[0]) e o nome do br.com.httpfluidobjects.appdivinapolenta.cliente(infoPedido[1])
-        Log.d("asd", infoPedido[0]);
-        Log.d("fcfsd", infoPedido[1]);
-        Log.d("teste", "terminou busca");*/
-
-        //if(i != 0){
-//        name.setText("Cliente: Gabriel");}
-//        else {name.setText("Cliente: Carla");}
-        /*linha1.setText("Olá!, sirva-se à vontade");
-        linha2.setText("Valor: R$ 0,00");
-        finaliza = false;*/
 
 
-        //monitoraBatelada();
 
 
-        /*name.setText("Cliente: " + infoPedido[1]);
-        this.idPedido = Integer.parseInt(infoPedido[0]); //converte o id do pedido para int*/
+        getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
-        getJSONClientes("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
-        if(cliente.isValid() != true){
-            new AlertDialog.Builder(this)
+        if (cliente.isValid() != true) {
+            new AlertDialog.Builder(getApplicationContext())
                     .setTitle("você não está cadastrado!")
                     .setMessage("Por favor, peça ao operador que o cadastre.")
                     .setNeutralButton("ok",
@@ -494,13 +606,17 @@ public class CervejaActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             }).show();
-        }
-        else {
+        } else {
             clpManager = new CLPManager();
-            // Log.d("ADM23", String.valueOf(chopeiraId));
-            if (clpManager.open(chopeiraId)) { //inicializa os registradores necessários
+            clpManager.inicializaEndRegistradores(chopeiraId);
+            setMaxVolume();
+            if (clpManager.open()) { //inicializa os registradores necessários
                 monitoraBatelada(); //monitora as informações da batelada
-                atualizaInfoPedido(0); //atualiza as informações na tela do aplicativo
+                try {
+                    atualizaInfoPedido(0); //atualiza as informações na tela do aplicativo
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             } else {
                 linha1.setText("Olá " + cliente.getNome() + ", sirva-se à vontade!");
                 linha2.setText("O saldo de seu cartão agora é de: R$ " + cliente.getSaldo());
@@ -508,58 +624,41 @@ public class CervejaActivity extends AppCompatActivity {
             }
         }
 
-    }
+
+}
 
 
-    public void atualizaInfoPedido(Integer vol) { //pega informações registradas no clp manager e atualiza as a tela
-        final Handler mHandler = new Handler();
 
-       // new Thread(new Runnable() {
-         //   @Override
-          //  public void run() {
 
-               // while (!finaliza) {
-                   // sleep(70);
-                   // mHandler.post(new Runnable() {
-                     //   @Override
-                      //  public void run() {
-                         //   volume = clpManager.getVolume(); //pega o volume registrado em tempo real
-                            finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
-                            if (!String.valueOf(vol).equals(txtVolume.getText())) { //Verifica se houve alteração no volume
-                                float saldo_aux = cliente.getSaldo();
-                                float custo = (ceva.getValor()/100)*vol;
-                                saldo_aux = saldo_aux - custo;
 
-                                linha1.setText(cliente.getNome()+", você serviu "+ vol +"ml, valor R$"+ custo);
-                                linha2.setText("O saldo do seu cartão agora é de R$"+ custo); //atualiza a interface
-                                //txtValor.setText("Valor: R$ " + getValorStr());
-                            }
 
-                       // }
-                   // });
-               // }
-                entrada = "";}
-               // mHandler.post(new Runnable() {
-               //     @Override
-                  //  public void run() {
-               /*         try {
-                            IntegracaoAutomatize.geraItemPedido(ceva, volume, idPedido);
-                           clpManager.atualizaInfoDrupal(chopeiraNid, chopeiraId, ceva.getNid(), volume); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        sleep(2000);
-                        name.setText("Passe o cartão");
-                        txtVolume.setText("");
-                        txtValor.setText("Sirva-se à vontade");
-                        txtSeBeber.setText("Se beber, não dirija!");
-                    }*/
-              //  });
+    public void atualizaInfoPedido(Integer vol) throws JSONException { //pega informações registradas no clp manager e atualiza as a tela
 
-           // }
-    //    }).start();
+     //   volume = clpManager.getVolume(); //pega o volume registrado em tempo real
+        finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
+        if (!String.valueOf(vol).equals(txtVolume.getText())) { //Verifica se houve alteração no volume
+            float saldo_aux = cliente.getSaldo();
+            float custo = (ceva.getValor()/100)*vol;
+            saldo_aux = saldo_aux - custo;
 
-   // }
+            linha1.setText(cliente.getNome()+", você serviu "+ vol +"ml, valor R$"+ custo);
+            linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
+
+            JSONObject jobj;
+            jobj = new JSONObject();
+
+            jobj.put("id_cliente", cliente.getId()); //id_item_automatize
+
+            jobj.put("novo_saldo", saldo_aux);
+            String data = jobj.toString();
+
+            String url = "http://divinapolenta.cloud.fluidobjects.com/atualiza_saldo";
+            ExportJSON.sendJSON(url, data);
+            //txtValor.setText("Valor: R$ " + getValorStr());
+        }
+
+        entrada = "";}
+
 
     public String getValorStr(int vol) { //calcula o valor atual de acordo com o volume
         double valorDbl = (this.valorCeva / 100) * vol;
@@ -598,7 +697,7 @@ public class CervejaActivity extends AppCompatActivity {
                     public void run() {
                         //name.setText("Passe o cartão");
                         linha1.setText("Sirva-se à vontade");
-                         linha2.setText("Se beber, não dirija!");
+                        linha2.setText("Se beber, não dirija!");
                     }
                 });
                 }
@@ -623,7 +722,7 @@ public class CervejaActivity extends AppCompatActivity {
                             linha2.setText("Valor: R$ " + getValorStr(vol));
                         }
                     });
-                    sleep(3000);
+                    sleep(1000);
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -636,4 +735,21 @@ public class CervejaActivity extends AppCompatActivity {
             }
         }).start();
     }
+
+//    private boolean temSaldoParaMax() {
+//        float valorMax = precoMax();
+//        if (cliente.getSaldo() >= valorMax) {
+//            return true;
+//        }
+//        return false;
+//    }
+    private void setMaxVolume(){
+        float volume = cliente.getSaldo()/(ceva.getValor()/100);
+        clpManager.setMaxVol(volume);
+        Log.d("max vol", String.valueOf(volume));
+    }
+//    private float precoMax(){
+//        return clpManager.getMaxVol() * (ceva.getValor()/100);
+//    }
+
 }

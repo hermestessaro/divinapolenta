@@ -50,6 +50,10 @@ public class CLPManager {
         finalizaOp = false;
     }
 
+    public int getMaxVol(){
+        return master.readRegister(MAX_VOL_REG);
+    }
+
     //ajusta o endereco dos registradores de acordo com o numero da chopeira
     public void inicializaEndRegistradores(int chopeira) {
         //chopeira -= 1;
@@ -75,13 +79,13 @@ public class CLPManager {
     // - - - - - - - - - -  CLIENTE - - - - - - - - - - - //
 
     //É chamado para abrir a batelada apos passar o cartão
-    public boolean open(int numeroChopeira) {
-        inicializaEndRegistradores(numeroChopeira);
+    public boolean open() {
+        //inicializaEndRegistradores(numeroChopeira);
         //master.writeRegisters(STATUS_REG, 10);
         Log.d("Status", String.valueOf(master.readRegister(STATUS_REG)));
         if (master.readRegister(STATUS_REG) == 10) {
             master.writeRegisters(MULT_FACTOR_REG, 390);
-            master.writeRegisters(MAX_VOL_REG, 500); //seta o volume maximo
+            //master.writeRegisters(MAX_VOL_REG, 500); //seta o volume maximo
             //master.writeRegisters(STATUS_REG, 20); //seta status para programado
             master.writeRegisters(BATELADA_REG, 1); //abre a batelada
             statusBatelada = 1;
@@ -230,10 +234,6 @@ public class CLPManager {
         }
     }
 
-    public String getMaxVolStr() {
-        return String.valueOf(max_vol_valor);
-    }
-
     public String getVazaoStr() {
         return String.valueOf(vazao_valor);
     }
@@ -283,5 +283,7 @@ public class CLPManager {
         ExportJSON.sendJSON(url, data);
     }
 
-
+    public void setMaxVol(float vol){
+        master.writeRegisters(MAX_VOL_REG, (int) vol);
+    }
 }

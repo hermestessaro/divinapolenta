@@ -18,13 +18,12 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class GetOperadores {
-    private ArrayList<String[]> dados;
-    private String[] operador;
+    private ArrayList<br.com.httpfluidobjects.appdivinapolenta.operador> dados;
+    operador operador;
     String url = "http://divinapolenta.cloud.fluidobjects.com/get_operadores";
 
     public GetOperadores() {
-        dados = new ArrayList<String[]>();
-        operador = new String[3];
+        dados = new ArrayList<operador>();
     }
 
 
@@ -60,8 +59,10 @@ public class GetOperadores {
                     {
                         JSONObject jsonChopeiraObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
 
-                        operador[0] = jsonChopeiraObject.getString("cartao");
-                        operador[1] = jsonChopeiraObject.getString("nome");
+                        operador = new operador();
+                        operador.setId(Integer.parseInt(jsonChopeiraObject.getString("vid")));
+                        operador.setCartao(jsonChopeiraObject.getString("cartao"));
+                        operador.setNome(jsonChopeiraObject.getString("nome"));
                         dados.add(operador);
                     }
 
