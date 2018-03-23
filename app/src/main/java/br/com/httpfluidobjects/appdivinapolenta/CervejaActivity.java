@@ -594,6 +594,7 @@ public class CervejaActivity extends AppCompatActivity {
         getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
 
+        // TODO: is the comparison "!= true" here really necessary? "!cliente.isValid()" should be enough
         if (cliente.isValid() != true) {
             new AlertDialog.Builder(getApplicationContext())
                     .setTitle("você não está cadastrado!")
