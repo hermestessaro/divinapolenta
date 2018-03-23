@@ -127,7 +127,8 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("NID_CHOPEIRA", String.valueOf(torneira.getNid())).apply();
 
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("ID_CHOPEIRA", idNovaChopeira).apply();
-        String volumeAbastecidoStr = edtVolumeAbastecido.getText().toString();
+        //TODO ajeitar isso
+        /*String volumeAbastecidoStr = edtVolumeAbastecido.getText().toString();
         if(!volumeAbastecidoStr.equals("")){
             Log.d("abastecer barril: ", volumeAbastecidoStr);
             try {
@@ -135,7 +136,7 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         Intent intent = new Intent(OperadorActivity.this, CervejaActivity.class);
         startActivity(intent);
     }

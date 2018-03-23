@@ -28,7 +28,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
     BluetoothSocket mmSocket;
     OutputStream mmOutputStream;
     InputStream mmInputStream;
-    ArrayList<operador[]> dadosOperadores;
+    ArrayList<operador> dadosOperadores;
     MasterTest master;
     Thread workerThread;
     byte[] readBuffer;
@@ -54,14 +54,14 @@ public class IniciaServicoActivity extends AppCompatActivity {
         dadosOperadores = operadores.getDados();
 
 
-        master = new MasterTest("192.168.15.7", 502);
+        master = new MasterTest("192.168.1.15", 502);
 
-       /* findBT();
+        findBT();
         try {
             openBT();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
     }
 
@@ -159,13 +159,13 @@ public class IniciaServicoActivity extends AppCompatActivity {
                                     {
                                         public void run()
                                         {
-                                            Log.d("data", data);
-                                            StringBuffer sb = new StringBuffer(data);
-                                            sb.reverse();
+                                            Log.d("primeiratela", data);
+                                            //StringBuffer sb = new StringBuffer(data);
+                                            //sb.reverse();
                                             int i = 0;
                                             for(i=0; i<dadosOperadores.size(); i++) {
-                                                if (sb.equals(dadosOperadores.get(i))) {//se cartao de operador dispara a ativity operador
-                                                    Log.d("TAD3", sb.toString());
+                                                if (data.contains(dadosOperadores.get(i).getCartao())) {//se cartao de operador dispara a ativity operador
+                                                    Log.d("TAD3", data.toString());
                                                     showButtons();
                                                     break;
                                                 }
@@ -203,7 +203,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
         mmSocket.close();
     }
 
-    @Override
+ /*   @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) { //ao passar o cartão lê cada caractere como uma tecla, chamando a função 8 vezes
 
         char pressedKey = (char) event.getUnicodeChar();
@@ -213,21 +213,21 @@ public class IniciaServicoActivity extends AppCompatActivity {
         //gambiarra pra pular leitura de cartao
         showButtons();
 
-//        if(entrada.length() == 8){
-//            //Log.d("TAD2", entrada);//quando ler os 8 caracteres começa a monitorar a batelada
-//            int i = 0;
-//            for(i = 0; i<dadosOperadores.size(); i++){
-//                if(entrada.equals(dadosOperadores.get(i))) {//se cartao de operador dispara a ativity operador
-//                    // Log.d("TAD3", entrada);
-//                    showButtons();
-//                    break;
-//                }
-//
-//            }
-//            entrada="";
-//        }
+        if(entrada.length() == 8){
+            //Log.d("TAD2", entrada);//quando ler os 8 caracteres começa a monitorar a batelada
+            int i = 0;
+            for(i = 0; i<dadosOperadores.size(); i++){
+                if(entrada.equals(dadosOperadores.get(i))) {//se cartao de operador dispara a ativity operador
+                    // Log.d("TAD3", entrada);
+                    showButtons();
+                    break;
+                }
+
+            }
+            entrada="";
+        }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
     public void btnEntraOp(View view) {
         Intent intent = new Intent(IniciaServicoActivity.this, OperadorActivity.class);
@@ -238,8 +238,8 @@ public class IniciaServicoActivity extends AppCompatActivity {
         Intent intent = new Intent(IniciaServicoActivity.this, MonitoraActivity.class);
         startActivity(intent);
     }
-    public void btnEntra(View view){
-
+    public void btnEntra(View view) throws IOException {
+        closeBT();
         Intent intent = new Intent(IniciaServicoActivity.this, CervejaActivity.class);
         startActivity(intent);
     }

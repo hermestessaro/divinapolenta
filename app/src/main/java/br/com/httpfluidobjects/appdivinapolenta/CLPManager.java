@@ -46,7 +46,7 @@ public class CLPManager {
 
     public CLPManager() {
         //master = new MasterTest("192.168.15.15", 502);
-        master = new MasterTest("192.168.15.9", 502);
+        master = new MasterTest("192.168.1.15", 502);
         finalizaOp = false;
     }
 

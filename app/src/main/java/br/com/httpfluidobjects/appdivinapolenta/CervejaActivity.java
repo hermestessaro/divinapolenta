@@ -49,7 +49,7 @@ public class CervejaActivity extends AppCompatActivity {
     public int cevaId;
     public int chopeiraId;
     public int chopeiraNid;
-    cliente cliente;
+    cliente cliente = null;
     cerveja ceva;
     int cont;
     CLPManager clpManager;
@@ -96,8 +96,12 @@ public class CervejaActivity extends AppCompatActivity {
         //TODO: verificar se ha conexao com a internet
 
         if(cevaId != 0 && chopeiraId != 0) {
+            ProgressDialog loading;
+            loading = ProgressDialog.show(CervejaActivity.this, "Por favor aguarde...", null, true, false);
             getJSONCervejasSincrono("http://divinapolenta.cloud.fluidobjects.com/get_cervejas");
+            loading.dismiss();
             showBeer();
+
         }
         else{
             new AlertDialog.Builder(this)
@@ -114,17 +118,13 @@ public class CervejaActivity extends AppCompatActivity {
 
         }
 
+
+        findBT();
         try {
-            preparesCLP("E062F187");
-        } catch (JSONException e) {
+            openBT();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-//        findBT();
-//        try {
-//            openBT();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
     }
 
@@ -215,6 +215,8 @@ public class CervejaActivity extends AppCompatActivity {
 
     private void getJSONCervejasSincrono(String uri){
 
+
+
         BufferedReader bufferedReader = null;
         try {
             URL url = new URL(uri);
@@ -268,6 +270,7 @@ public class CervejaActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -376,7 +379,7 @@ public class CervejaActivity extends AppCompatActivity {
             for (int i = 0; i < y; i++) {
                 JSONObject jsonClienteObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
 
-                if(cartao.equals(jsonClienteObject.getString("cartao"))){
+                if(cartao.contains(jsonClienteObject.getString("cartao"))){
                     cliente = new cliente();
                     cliente.setCartao(cartao);
                     cliente.setCpf(jsonClienteObject.getString("cpf"));
@@ -385,10 +388,8 @@ public class CervejaActivity extends AppCompatActivity {
                     cliente.setSaldo(Float.parseFloat(jsonClienteObject.getString("saldo")));
                     cliente.setValid(true);
                     achou = 1;
+                    break;
                 }
-
-
-                break;
             }
             if(achou == 0){
                 cliente = new cliente();
@@ -540,12 +541,12 @@ public class CervejaActivity extends AppCompatActivity {
                                     {
                                         public void run()
                                         {
-                                            Log.d("data", entrada);
-                                            StringBuffer sb = new StringBuffer(entrada);
-                                            sb.reverse();
-                                            if(sb.length() == 8){
+                                            Log.d("leituracartao", entrada);
+                                            //StringBuffer sb = new StringBuffer(entrada);
+                                            //sb.reverse();
+                                            if(entrada.length() >= 8){
                                                 try {
-                                                    preparesCLP(sb.toString());
+                                                    preparesCLP(entrada);
                                                     entrada = "";
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
@@ -587,26 +588,16 @@ public class CervejaActivity extends AppCompatActivity {
 
         Log.d("preparesCLP", "recebeu id do cartao" + idCartao);
 
-
-
-
-
         getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
 
-        if (cliente.isValid() != true) {
-            new AlertDialog.Builder(getApplicationContext())
-                    .setTitle("você não está cadastrado!")
-                    .setMessage("Por favor, peça ao operador que o cadastre.")
-                    .setNeutralButton("ok",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(CervejaActivity.this, OperadorActivity.class);
-                                    startActivity(intent);
-                                }
-                            }).show();
-        } else {
+        if (cliente.isValid() == true) {
+
+            linha1.setText("Olá " + cliente.getNome() + ", sirva-se à vontade!");
+            linha2.setText("O saldo de seu cartão agora é de: R$ " + cliente.getSaldo());
+            entrada = "";
+
+
             clpManager = new CLPManager();
             clpManager.inicializaEndRegistradores(chopeiraId);
             setMaxVolume();
@@ -623,6 +614,9 @@ public class CervejaActivity extends AppCompatActivity {
                 entrada = "";
             }
         }
+        else{
+            linha1.setText("cliente não cadastrado");
+        }
 
 
 }
@@ -634,7 +628,7 @@ public class CervejaActivity extends AppCompatActivity {
 
     public void atualizaInfoPedido(Integer vol) throws JSONException { //pega informações registradas no clp manager e atualiza as a tela
 
-     //   volume = clpManager.getVolume(); //pega o volume registrado em tempo real
+        volume = clpManager.getVolume(); //pega o volume registrado em tempo real
         finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
         if (!String.valueOf(vol).equals(txtVolume.getText())) { //Verifica se houve alteração no volume
             float saldo_aux = cliente.getSaldo();
@@ -657,7 +651,8 @@ public class CervejaActivity extends AppCompatActivity {
             //txtValor.setText("Valor: R$ " + getValorStr());
         }
 
-        entrada = "";}
+        entrada = "";
+    }
 
 
     public String getValorStr(int vol) { //calcula o valor atual de acordo com o volume
@@ -735,6 +730,45 @@ public class CervejaActivity extends AppCompatActivity {
             }
         }).start();
     }
+
+
+    /*public void monitoraBatelada() { //abre uma nova thread para escutar os registradores do clp
+        final Handler mHandler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // while (!finaliza) {
+                int x;
+                if (i!=0){
+                    x =150;
+                }else x=300;
+                sleep(1000);
+                for (i = 0; i < x; i = i + 5) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            // finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
+                            // int vol = clpManager.monitorsCLP(this);
+                            volume = i;
+                            linha1.setText(String.valueOf("Serviu: " + String.valueOf(i) + "ml")); //atualiza a interface
+                            linha2.setText("Valor: R$ " + getValorStr(i));
+                        }
+                    });
+                    sleep(150);
+                }
+                sleep(3000);
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        linha1.setText("olá"+cliente.getNome()+" sirva-se à vontade");
+                    }
+                });
+                //  }
+            }
+        }).start();
+    }
+     */
 
 //    private boolean temSaldoParaMax() {
 //        float valorMax = precoMax();
