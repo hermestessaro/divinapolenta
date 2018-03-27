@@ -4,6 +4,7 @@ package br.com.httpfluidobjects.appdivinapolenta;
  * Created by gabrielweich on 25/09/17.
  */
 
+import android.os.StrictMode;
 import android.util.Log;
 
 import java.net.*;
@@ -20,6 +21,7 @@ public class MasterTest{
     /* Variables for storing the parameters */
     InetAddress addr; //the slave's address
     int port;
+
 
 
     public MasterTest(String ip, int port){
@@ -40,6 +42,7 @@ public class MasterTest{
             SimpleRegister reg = null;
             reg = new SimpleRegister(value);
             con = new TCPMasterConnection(addr);
+            con.setAddress(addr);
             con.setPort(port);
             con.setTimeout(3000);
             con.connect();

@@ -46,7 +46,7 @@ public class CLPManager {
 
     public CLPManager() {
         //master = new MasterTest("192.168.15.15", 502);
-        master = new MasterTest("192.168.1.15", 502);
+        master = new MasterTest("10.0.1.15", 502);
         finalizaOp = false;
     }
 
@@ -54,13 +54,14 @@ public class CLPManager {
         return master.readRegister(MAX_VOL_REG);
     }
 
+
     //ajusta o endereco dos registradores de acordo com o numero da chopeira
     public void inicializaEndRegistradores(int chopeira) {
         //chopeira -= 1;
-        //Log.d("chopeira", String.valueOf(chopeira));
+        Log.d("chopeira", String.valueOf(chopeira));
         chopeira = chopeira - 1;
-        //int regInicial = 3000 + (chopeira  * 30);
-        int regInicial = 1;
+        int regInicial = 3000 + (chopeira  * 30);
+        //int regInicial = 1;
 
         BATELADA_REG = regInicial + 0;
         STATUS_REG = regInicial + 3;
@@ -81,12 +82,11 @@ public class CLPManager {
     //É chamado para abrir a batelada apos passar o cartão
     public boolean open() {
         //inicializaEndRegistradores(numeroChopeira);
-        //master.writeRegisters(STATUS_REG, 10);
-        Log.d("Status", String.valueOf(master.readRegister(STATUS_REG)));
+
         if (master.readRegister(STATUS_REG) == 10) {
             master.writeRegisters(MULT_FACTOR_REG, 390);
-            //master.writeRegisters(MAX_VOL_REG, 500); //seta o volume maximo
-            //master.writeRegisters(STATUS_REG, 20); //seta status para programado
+            master.writeRegisters(MAX_VOL_REG, 500); //seta o volume maximo
+            master.writeRegisters(STATUS_REG, 20); //seta status para programado
             master.writeRegisters(BATELADA_REG, 1); //abre a batelada
             statusBatelada = 1;
             Log.d("teste", "abriu batelada");
@@ -116,10 +116,6 @@ public class CLPManager {
         return volume;
     }
 
-
-    public int getVolume() {
-        return volume;
-    }
 
     public boolean finalizou() {
         if (statusBatelada == 3){

@@ -164,7 +164,8 @@
             android:onClick="simulaServida"
             android:text="Simular Servida"
             android:textColor="@android:color/white"
-            android:textSize="28sp" />
+            android:textSize="28sp"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 

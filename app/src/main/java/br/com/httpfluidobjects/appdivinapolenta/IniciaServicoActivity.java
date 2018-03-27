@@ -45,23 +45,25 @@ public class IniciaServicoActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//        getSupportActionBar().setCustomView(R.layout.action_bar);
 
         Log.d("ADM", "on create");
         entrada="";
         GetOperadores operadores = new GetOperadores();
         dadosOperadores = operadores.getDados();
 
+        //Intent intent = getIntent();
+        //int operou = intent.getIntExtra("operou", 0);
 
-        master = new MasterTest("192.168.1.15", 502);
+        //if(operou == 0) {
+            master = new MasterTest("192.168.1.15", 502);
 
-        findBT();
-        try {
-            openBT();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            findBT();
+            try {
+                openBT();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        //}
 
     }
 
@@ -103,7 +105,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
         {
             for(BluetoothDevice device : pairedDevices)
             {
-                if(device.getName().contains("CHOPEIRA-01"))
+                if(device.getName().contains("CHOPEIRA-01") || device.getName().contains("CHOPEIRA-02") || device.getName().contains("CHOPEIRA-03"))
                 {
                     mmDevice = device;
                     break;
@@ -163,6 +165,8 @@ public class IniciaServicoActivity extends AppCompatActivity {
                                             //StringBuffer sb = new StringBuffer(data);
                                             //sb.reverse();
                                             int i = 0;
+
+
                                             for(i=0; i<dadosOperadores.size(); i++) {
                                                 if (data.contains(dadosOperadores.get(i).getCartao())) {//se cartao de operador dispara a ativity operador
                                                     Log.d("TAD3", data.toString());
@@ -170,7 +174,9 @@ public class IniciaServicoActivity extends AppCompatActivity {
                                                     break;
                                                 }
                                             }
-                                            /*if(data.equals("A04DFC87")) {
+
+                                            /*
+                                            if(data.equals("E038FC87")) {
                                                 showButtons();
                                             }*/
                                         }
