@@ -45,8 +45,8 @@ public class CLPManager {
     private boolean finalizaOp;
 
     public CLPManager() {
-        //master = new MasterTest("192.168.15.15", 502);
-        master = new MasterTest("10.0.1.15", 502);
+        master = new MasterTest("192.168.15.12", 502);
+        //master = new MasterTest("10.0.1.15", 502);
         finalizaOp = false;
     }
 
@@ -60,12 +60,12 @@ public class CLPManager {
         //chopeira -= 1;
         Log.d("chopeira", String.valueOf(chopeira));
         chopeira = chopeira - 1;
-        int regInicial = 3000 + (chopeira  * 30);
+        int regInicial = 3000 + (chopeira  * 30) - 1;
         //int regInicial = 1;
 
-        BATELADA_REG = regInicial + 0;
-        STATUS_REG = regInicial + 3;
-        VOLUME_REG = regInicial + 4;
+        BATELADA_REG = regInicial + 0; //2999
+        STATUS_REG = regInicial + 3;   //3002
+        VOLUME_REG = regInicial + 4;   //3003
         STATUS_VS_REG = regInicial + 5;
         MAX_VOL_REG = regInicial + 7;
         VAZAO_REG = regInicial + 8;
@@ -80,12 +80,15 @@ public class CLPManager {
     // - - - - - - - - - -  CLIENTE - - - - - - - - - - - //
 
     //É chamado para abrir a batelada apos passar o cartão
-    public boolean open() {
-        //inicializaEndRegistradores(numeroChopeira);
+    public boolean open(int numeroChopeira) {
+        Log.d("t1", "vai tentar abrir a batelada");
+        inicializaEndRegistradores(numeroChopeira);
 
-        if (master.readRegister(STATUS_REG) == 10) {
+        boolean aux = master.readRegister(STATUS_REG) == 10;
+        Log.d("valor de aux", String.valueOf(aux));
+        if (aux) {
             master.writeRegisters(MULT_FACTOR_REG, 390);
-            master.writeRegisters(MAX_VOL_REG, 500); //seta o volume maximo
+            //master.writeRegisters(MAX_VOL_REG, 500); //seta o volume maximo
             master.writeRegisters(STATUS_REG, 20); //seta status para programado
             master.writeRegisters(BATELADA_REG, 1); //abre a batelada
             statusBatelada = 1;
@@ -105,24 +108,24 @@ public class CLPManager {
 
         this.statusBatelada = master.readRegister(BATELADA_REG);
 
-//        if (this.statusBatelada == 3) {
-//            Log.d("teste", "encerrou batelada");
-//            master.writeRegisters(BATELADA_REG, 4);
-//            this.statusBatelada = 4;
-//            return 0;
-//        }
-
+        if (this.statusBatelada == 3) {
+            Log.d("teste", "encerrou batelada");
+            master.writeRegisters(BATELADA_REG, 4);
+            this.statusBatelada = 4;
+            return 1;
+        }
         Log.d("teste", "listening");
-        return volume;
+        sleep(200);
+        return monitorsCLP();
     }
 
 
+    public int getVolume() {
+        return volume;
+    }
+
     public boolean finalizou() {
-        if (statusBatelada == 3){
-            master.writeRegisters(BATELADA_REG, 4);
-            this.statusBatelada = 4;
-            return true;
-        }
+        if (statusBatelada == 4) return true;
         return false;
     }
 
@@ -142,7 +145,6 @@ public class CLPManager {
     }
 
     boolean simulaServida() {
-        master.writeRegisters(STATUS_REG, 10);
         if (master.readRegister(STATUS_REG) == 10) {
             master.writeRegisters(MULT_FACTOR_REG, 15);
             master.writeRegisters(MAX_VOL_REG, volumeProgramado); //seta o volume maximo
@@ -264,22 +266,19 @@ public class CLPManager {
 
     public void atualizaInfoDrupal(int nid_chopeira, int id_chopeira, int nid_cerveja, int volume_consumido) throws JSONException {
         inicializaEndRegistradores(id_chopeira);
-        Date currentTime = Calendar.getInstance().getTime();
         JSONObject jobj;
         jobj = new JSONObject();
 
         jobj.put("nid_chopeira", nid_chopeira); //id_item_automatize
         jobj.put("nid_cerveja", nid_cerveja);
         jobj.put("volume_consumido", volume_consumido);
-        //jobj.put("volume_barril", master.readRegister(14));
-        jobj.put("data", currentTime);
         String data = jobj.toString();
 
         String url = "http://divinapolenta.cloud.fluidobjects.com/json/put";
         ExportJSON.sendJSON(url, data);
     }
 
-    public void setMaxVol(float vol){
-        master.writeRegisters(MAX_VOL_REG, (int) vol);
+    public void setMaxVol(int max){
+        master.writeRegisters(MAX_VOL_REG, max);
     }
 }

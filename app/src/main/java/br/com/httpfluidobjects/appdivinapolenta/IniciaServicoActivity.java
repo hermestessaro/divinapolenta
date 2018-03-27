@@ -29,7 +29,6 @@ public class IniciaServicoActivity extends AppCompatActivity {
     OutputStream mmOutputStream;
     InputStream mmInputStream;
     ArrayList<operador> dadosOperadores;
-    MasterTest master;
     Thread workerThread;
     byte[] readBuffer;
     int readBufferPosition;
@@ -45,25 +44,35 @@ public class IniciaServicoActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
+        //DEBUG
+        showButtons();
+
 
         Log.d("ADM", "on create");
         entrada="";
         GetOperadores operadores = new GetOperadores();
         dadosOperadores = operadores.getDados();
 
-        //Intent intent = getIntent();
-        //int operou = intent.getIntExtra("operou", 0);
+        Intent intent = getIntent();
+        int operou = intent.getIntExtra("operou", 0);
 
-        //if(operou == 0) {
-            master = new MasterTest("192.168.1.15", 502);
+        if(operou == 0) {
+            //master = new MasterTest("192.168.1.15", 502);
 
-            findBT();
+           /*DEBUG
+           findBT();
             try {
                 openBT();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-        //}
+            }*/
+            //}
+        }
+        else{
+            showButtons();
+        }
+
+
 
     }
 
@@ -73,9 +82,9 @@ public class IniciaServicoActivity extends AppCompatActivity {
         Button telaOp = (Button) findViewById(R.id.btnEntrarOp);
         Button telaMonitora = (Button) findViewById(R.id.btnEntrarMonitora);
 
-        telaPrincipal.setVisibility(View.GONE);
-        telaOp.setVisibility(View.GONE);
-        telaMonitora.setVisibility(View.GONE);
+        //telaPrincipal.setVisibility(View.GONE);
+        //telaOp.setVisibility(View.GONE);
+        //telaMonitora.setVisibility(View.GONE);
         super.onResume();
     }
 
@@ -209,14 +218,12 @@ public class IniciaServicoActivity extends AppCompatActivity {
         mmSocket.close();
     }
 
- /*   @Override
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) { //ao passar o cartão lê cada caractere como uma tecla, chamando a função 8 vezes
 
         char pressedKey = (char) event.getUnicodeChar();
         entrada += Character.toString(pressedKey);//armazena cada caractere na variável entrada
         Log.d("TAD", entrada);
-
-        //gambiarra pra pular leitura de cartao
         showButtons();
 
         if(entrada.length() == 8){
@@ -224,7 +231,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
             int i = 0;
             for(i = 0; i<dadosOperadores.size(); i++){
                 if(entrada.equals(dadosOperadores.get(i))) {//se cartao de operador dispara a ativity operador
-                    // Log.d("TAD3", entrada);
+                     Log.d("TAD3", entrada);
                     showButtons();
                     break;
                 }
@@ -233,7 +240,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
             entrada="";
         }
         return super.onKeyDown(keyCode, event);
-    }*/
+    }
 
     public void btnEntraOp(View view) {
         Intent intent = new Intent(IniciaServicoActivity.this, OperadorActivity.class);
@@ -245,7 +252,8 @@ public class IniciaServicoActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void btnEntra(View view) throws IOException {
-        closeBT();
+        // DEBUG
+        // closeBT();
         Intent intent = new Intent(IniciaServicoActivity.this, CervejaActivity.class);
         startActivity(intent);
     }

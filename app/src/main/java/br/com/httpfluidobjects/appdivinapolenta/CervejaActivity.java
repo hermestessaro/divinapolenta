@@ -18,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,11 +56,10 @@ public class CervejaActivity extends AppCompatActivity {
     cliente cliente = null;
     cerveja ceva;
     int cont;
-    CLPManager clpManager;
+    CLPManager clpManager = new CLPManager();
     int volume;
+    int volume_aux;
     double valor;
-    TextView txtVolume;
-    TextView txtValor;
     static TextView  linha1;
     static TextView linha2;
     TextView txtSeBeber;
@@ -82,9 +83,10 @@ public class CervejaActivity extends AppCompatActivity {
     boolean cartao;
     float saldo_aux;
     float custo;
-    int vol;
+    int pulsos;
     final Handler mHandler = new Handler();
     Thread t1;
+    int count = 0;
 
 
     @Override
@@ -99,15 +101,16 @@ public class CervejaActivity extends AppCompatActivity {
         terminou = false;
         cartao = false;
         Log.d("SERVIU: ", String.valueOf(serviu) + "   Terminou: " + String.valueOf(terminou) + "   Cartão: " + String.valueOf(cartao));
-        clpManager = new CLPManager();
         linha1 = (TextView) findViewById(R.id.linha1);
         linha2 = (TextView) findViewById(R.id.linha2);
-        linha1.setText("Passe o cartao");
-        linha2.setText("se beber nao dirija");
+        linha1.setText("Passe o cartão");
+        linha2.setText("se beber não dirija");
 
 
 
         retriveSavedImage();
+
+        //MUDAR O VALOR DEFAULT
         cevaId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CERVEJA", "0"));
         //cevaId = 1;
         chopeiraId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CHOPEIRA", "0"));
@@ -124,12 +127,14 @@ public class CervejaActivity extends AppCompatActivity {
             loading.dismiss();
             showBeer();
 
+            /* DEBUG
             findBT();
+
             try {
                 openBT();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
         else{
             new AlertDialog.Builder(this)
@@ -612,124 +617,128 @@ public class CervejaActivity extends AppCompatActivity {
 
     //------------- CLP -----------//
 
-    public void preparesCLP(final String idCartao) throws JSONException { //executa ao clicar no botão (passar cartão)
+
+    public void preparesCLP(String idCartao) throws JSONException { //executa ao clicar no botão (passar cartão)
+
 
         Log.d("preparesCLP", "recebeu id do cartao" + idCartao);
-
         getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
+        if(cliente.isValid()){
+            Log.d("1", "primeira mensagem");
+            linha1.setText("Olá "+cliente.getNome()+". Seu saldo é de R$"+cliente.getSaldo());
+        }
 
-        if (cliente.isValid() == true) {
-            linha1.setText("Olá " + cliente.getNome() + ", sirva-se à vontade!");
-            linha2.setText("O saldo de seu cartão agora é de: R$ " + cliente.getSaldo());
-            saldo_aux = cliente.getSaldo();
 
-
-            cartao = true;
-            Log.d("SERVIU: ", String.valueOf(serviu) + "   Terminou: " + String.valueOf(terminou) + "   Cartão: " + String.valueOf(cartao));
-            /*cliente = new cliente();
-            cliente.setNome("divino cliente");
-            cliente.setSaldo(1000);*/
+        finaliza = false;
 
 
 
-
-
-            MasterTest master = new MasterTest("192.168.15.13", 502);
-
-            /*
-             *   Torneira 1 (APA)
-             *   REGISTRADOR 3012: mls por pulso        *
-             *   REGISTRADOR 3007: Quantidade liberada  *
-             *   REGISTRADOR 3000: Mandar ligar         */
-
-
-            /*
-             *   Torneira 2 (Red)
-             *   REGISTRADOR 3042: mls por pulso        *
-             *   REGISTRADOR 3037: Quantidade liberada  *
-             *   REGISTRADOR 3030: Mandar ligar         */
-
-            /*
-             *   Torneira 3 (Lager)
-             *   REGISTRADOR 3072: mls por pulso        *
-             *   REGISTRADOR 3067: Quantidade liberada  *
-             *   REGISTRADOR 3060: Mandar ligar         */
-
-
-
-
-            clpManager.inicializaEndRegistradores(chopeiraId);
+        if (clpManager.open(chopeiraId)) { //inicializa os registradores necessários
             setMaxVolume();
-
-            if (clpManager.open()) { //inicializa os registradores necessários
-                serviu = true;
-                monitoraBatelada(); //monitora as informações da batelada
-
-
-
-
-            } else {
-
-                entrada = "";
-            }
-            serviu = false;
-            cartao = false;
-            terminou = false;
-
-
+            monitoraBatelada(); //monitora as informações da batelada
+            this.atualizaInfoPedido(); //atualiza as informações na tela do aplicativo
+        } else {
+            Log.d("2", "segunda mensagem");
+            linha1.setText("Passe o cartão");
+            linha2.setText("se beber não dirija");
+            entrada = "";
         }
-        else{
-            linha1.setText("cliente não cadastrado");
-        }
-
 
     }
 
 
-    public void atualizaTela(){
-        runOnUiThread(new Runnable() {
+    public void atualizaInfoPedido() { //pega informações registradas no clp manager e atualiza as a tela
+        final Handler mHandler = new Handler();
+
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d("Atualiza: SERVIU: ", String.valueOf(serviu) + "   Terminou: " + String.valueOf(terminou) + "   Cartão: " + String.valueOf(cartao));
-                if (!serviu && !terminou && !cartao) {
-                    linha1.setText("Por favor, passe o cartão.");
-                    linha2.setText("Se beber não dirija.");
-                }
 
-                if (cartao && !serviu && !terminou) {
-                    linha1.setText("Olá " + cliente.getNome() + ", sirva-se à vontade!");
-                    linha2.setText("O saldo de seu cartão agora é de: R$ " + cliente.getSaldo());
+                while (!finaliza) {
+                    sleep(70);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            volume_aux = volume;
+                            volume = clpManager.getVolume(); //pega o volume registrado em tempo real
+                            finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
+
+                            if (volume != volume_aux) { //Verifica se houve alteração no volume
+                                linha2.setText("Serviu "+volume+"ml, valor R$ "+ getValorStr());
+                                Log.d("3", "terceira mensagem");
+
+                            }
+
+                        }
+                    });
                 }
-                if (serviu && cartao) {
-                    if (!terminou) {
-                        linha1.setText(String.valueOf("Serviu: " + String.valueOf(vol) + " ml")); //atualiza a interface
-                        linha2.setText("Valor: R$ " + getValorStr(vol));
-                    } else {
-                        linha1.setText(cliente.getNome() + ", você serviu " + vol + " ml, valor R$ " + custo);
-                        linha2.setText("O saldo do seu cartão agora é de R$ " + saldo_aux); //atualiza a interface
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        saldo_aux = cliente.getSaldo();
+                        custo = (ceva.getValor()/100)*volume;
+                        saldo_aux = saldo_aux - custo;
+
+
+                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custo);
+                        linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
+                        sleep(4000);
+                        Log.d("5", "quinta mensagem");
+                        Log.d("valores", String.valueOf(custo) +","+ String.valueOf(saldo_aux)+","+ String.valueOf(volume));
                     }
-                }
+                });
+
+                entrada = "";
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            atualizaClienteDrupal(); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        linha1.setText("Passe o cartao");
+                        linha2.setText("Se beber, não dirija!");
+                        Log.d("4", "quarta mensagem");
+
+                    }
+                });
+
+            }
+        }).start();
+
+    }
+
+    public String getValorStr() { //calcula o valor atual de acordo com o volume
+        double valorDbl = (this.valorCeva / 100) * volume;
+        String resultado = String.format("%.2f", valorDbl);
+        return resultado;
+    }
+
+
+    public void monitoraBatelada() { //abre uma nova thread para escutar os registradores do clp
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                clpManager.monitorsCLP();
             }
         });
+        t.start();
     }
 
 
 
-    public void atualizaInfoPedido() throws JSONException { //pega informações registradas no clp manager e atualiza as a tela
-
-        //volume = clpManager.getVolume(); //pega o volume registrado em tempo real
-        //finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
-        //if (!String.valueOf(vol).equals(txtVolume.getText())) { //Verifica se houve alteração no volume
-
-//        saldo_aux = cliente.getSaldo();
-//        custo = (ceva.getValor()/100)*vol;
-//        saldo_aux = saldo_aux - custo;
-//        terminou = true;
+    private void setMaxVolume(){
+        float max = (cliente.getSaldo()/(ceva.getValor())*100);
+        clpManager.setMaxVol((int) max);
+        Log.d("max vol", String.valueOf(max));
+    }
 
 
-        linha1.setText(cliente.getNome()+", você serviu "+ vol*10 +"ml, valor R$"+ custo);
-        linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
+
+    public void atualizaClienteDrupal() throws JSONException { //pega informações registradas no clp manager e atualiza as a tela
+
 
         JSONObject jobj;
         jobj = new JSONObject();
@@ -741,135 +750,18 @@ public class CervejaActivity extends AppCompatActivity {
 
         String url = "http://divinapolenta.cloud.fluidobjects.com/atualiza_saldo";
         ExportJSON.sendJSON(url, data);
-        //txtValor.setText("Valor: R$ " + getValorStr());
 
-
-        entrada = "";
-    }
-
-
-    public String getValorStr(int vol) { //calcula o valor atual de acordo com o volume
-        double valorDbl = (this.valorCeva / 100) * vol;
-        String resultado = String.format("%.2f", valorDbl);
-        return resultado;
-    }
-
-
-    public void monitoraBateladaDemo() { //abre uma nova thread para escutar os registradores do clp
-        final Handler mHandler = new Handler();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!finaliza) {
-                    int x;
-                    if (i!=0){
-                        x =150;
-                    }else x=300;
-                    sleep(1000);
-                    for (i = 0; i < x; i = i + 5) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
-                                //int vol = clpManager.monitorsCLP(this);
-                                volume = i;
-                                linha1.setText(String.valueOf("Serviu: " + String.valueOf(i) + "ml")); //atualiza a interface
-                                linha2.setText("Valor: R$ " + getValorStr(i));
-                            }
-                        });
-                        sleep(150);
-                    }
-                    sleep(3000);
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            //name.setText("Passe o cartão");
-                            linha1.setText("Sirva-se à vontade");
-                            linha2.setText("Se beber, não dirija!");
-                        }
-                    });
-                }
-            }
-        }).start();
     }
 
 
 
-    public void monitoraBatelada() { //abre uma nova thread para escutar os registradores do clp
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!finaliza) {
-                    serviu = true;
-                    finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
-
-                    vol = clpManager.monitorsCLP();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (serviu) {
-                                Log.d("Teste2", "foi");
-                                linha1.setText(String.valueOf("Serviu: " + String.valueOf(vol) + "ml")); //atualiza a interface
-                                linha2.setText("Valor: R$ " + getValorStr(vol));
-                            }
-                        }
-                    });
-                }
-
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        //name.setText("Passe o cartão");
-
-                        Log.d("Teste2", "foi");
-                        linha1.setText(cliente.getNome() + ", você serviu " + vol*10 + "ml, valor R$" + custo);
-                        linha2.setText("O saldo do seu cartão agora é de R$" + saldo_aux); //atualiza a interface
-                    }
-                });
 
 
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        linha1.setText("Passe o cartão");
-                        linha2.setText("beba");
-                    }
-                });
-
-            }
-        });
-
-
-        t2.start();
-
-        try{
-            t2.join();
-            custo = (ceva.getValor() / 100) * vol*10;
-            saldo_aux = saldo_aux - custo;
-
-            Log.d("volume", String.valueOf(vol));
-            Log.d("custo", String.valueOf(custo));
-            Log.d("saldo_aux", String.valueOf(saldo_aux));
-
-        }
-        catch(InterruptedException e){
-            e.printStackTrace();
-        }
-
+    public void simulaCartao(View view){
         try {
-            atualizaInfoPedido(); //atualiza as informações na tela do aplicativo
+            preparesCLP("80EF00AA");
         } catch (JSONException e) {
             e.printStackTrace();
-        }    }
-
-
-
-
-    private void setMaxVolume(){
-        float volume = cliente.getSaldo()/(ceva.getValor()/100);
-        clpManager.setMaxVol(volume);
-        Log.d("max vol", String.valueOf(volume));
+        }
     }
-
-
 }

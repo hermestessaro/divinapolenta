@@ -120,6 +120,15 @@
             android:layout_marginBottom="-50dp"
             app:srcCompat="@drawable/cerveja01" />
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/imageView3"
+            android:layout_centerHorizontal="true"
+            android:onClick="simulaCartao"
+            android:text="simula cartão" />
+
     </RelativeLayout>
 
     <RelativeLayout

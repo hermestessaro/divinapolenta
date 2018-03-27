@@ -32,6 +32,16 @@ public class MasterTest{
             e.printStackTrace();
         }
         this.port = port;
+        con = new TCPMasterConnection(addr);
+        con.setPort(port);
+        con.setTimeout(3000);
+        try {
+            con.connect();
+            Log.d("t", "eu sou o socket");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
      //Using jamod lib
@@ -41,21 +51,21 @@ public class MasterTest{
         try {
             SimpleRegister reg = null;
             reg = new SimpleRegister(value);
-            con = new TCPMasterConnection(addr);
+            /*con = new TCPMasterConnection(addr);
             con.setAddress(addr);
             con.setPort(port);
             con.setTimeout(3000);
-            con.connect();
+            con.connect();*/
             WriteSingleRegisterRequest write = new WriteSingleRegisterRequest(register, reg);
             ModbusTCPTransaction transaction = new ModbusTCPTransaction(con);
             transaction.setRequest(write);
             transaction.execute();
-            con.close();
+            //con.close();
         }
         catch (Exception ex) {
             ex.printStackTrace();
             Log.d("TEST", "Erro no write reg");
-            con.close();
+            //con.close();
         }
 
     }
@@ -65,19 +75,19 @@ public class MasterTest{
         int valor = 0;
         try {
             //2. Open the connection
-            con = new TCPMasterConnection(addr);
+            /*con = new TCPMasterConnection(addr);
             con.setPort(port);
-            con.setTimeout(000);
-            con.connect();
+            con.setTimeout(3000);
+            con.connect();*/
             ReadMultipleRegistersRequest request = new ReadMultipleRegistersRequest(register, 1);
             request.setUnitID(1);
             ReadMultipleRegistersResponse response = (ReadMultipleRegistersResponse) executeTransaction(con, request);
             valor = response.getRegisterValue(0);
-            con.close();
+            //con.close();
             return valor;
         }catch (Exception ex) {
             ex.printStackTrace();
-            con.close();
+            //con.close();
             return -1;
         }
     }
