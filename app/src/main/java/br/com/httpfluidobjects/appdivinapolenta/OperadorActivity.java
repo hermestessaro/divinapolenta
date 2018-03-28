@@ -137,8 +137,8 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
                 e.printStackTrace();
             }
         }*/
-        Intent intent = new Intent(OperadorActivity.this, IniciaServicoActivity.class);
-        intent.putExtra("operou", 1);
+        Intent intent = new Intent(OperadorActivity.this, CervejaActivity.class);
+//        intent.putExtra("operou", 1);
         startActivity(intent);
     }
 

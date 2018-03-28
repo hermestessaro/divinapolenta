@@ -104,30 +104,21 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="126dp"
                 android:text="Produzida com ingredientes 100% naturais, sem conservantes, com uma fórmula que se tornou sinônimo de simplicidade e perfeição: água, malte, lúpulo e nada mais."
                 android:textAlignment="center"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </RelativeLayout>
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
-            android:layout_height="160dp"
+            android:layout_height="400dp"
             android:layout_above="@+id/rotulo_amarelo"
             android:layout_alignLeft="@+id/rotulo_amarelo"
             android:layout_alignRight="@+id/rotulo_amarelo"
-            android:layout_marginBottom="-50dp"
+            android:layout_marginBottom="-120dp"
             app:srcCompat="@drawable/cerveja01" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/imageView3"
-            android:layout_centerHorizontal="true"
-            android:onClick="simulaCartao"
-            android:text="simula cartão" />
 
     </RelativeLayout>
 
@@ -146,6 +137,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="17dp"
+            android:text="Passe o cartão"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="20sp" />
@@ -168,6 +160,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="12dp"
+            android:text="Se beber não dirija"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="18sp" />

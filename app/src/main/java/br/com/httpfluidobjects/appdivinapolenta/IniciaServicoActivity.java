@@ -44,8 +44,6 @@ public class IniciaServicoActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        //DEBUG
-        showButtons();
 
 
         Log.d("ADM", "on create");
@@ -59,14 +57,13 @@ public class IniciaServicoActivity extends AppCompatActivity {
         if(operou == 0) {
             //master = new MasterTest("192.168.1.15", 502);
 
-           /*DEBUG
            findBT();
             try {
                 openBT();
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
-            //}
+            }
+
         }
         else{
             showButtons();
@@ -82,9 +79,9 @@ public class IniciaServicoActivity extends AppCompatActivity {
         Button telaOp = (Button) findViewById(R.id.btnEntrarOp);
         Button telaMonitora = (Button) findViewById(R.id.btnEntrarMonitora);
 
-        //telaPrincipal.setVisibility(View.GONE);
-        //telaOp.setVisibility(View.GONE);
-        //telaMonitora.setVisibility(View.GONE);
+        //telaPrincipal.setVisibility(View.INVISIBLE);
+        //telaOp.setVisibility(View.INVISIBLE);
+        //telaMonitora.setVisibility(View.INVISIBLE);
         super.onResume();
     }
 
@@ -252,8 +249,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void btnEntra(View view) throws IOException {
-        // DEBUG
-        // closeBT();
+        closeBT();
         Intent intent = new Intent(IniciaServicoActivity.this, CervejaActivity.class);
         startActivity(intent);
     }
@@ -265,7 +261,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
 
         telaPrincipal.setVisibility(View.VISIBLE);
         telaOp.setVisibility(View.VISIBLE);
-        telaMonitora.setVisibility(View.VISIBLE);
+        //telaMonitora.setVisibility(View.VISIBLE);
     }
 
 

@@ -45,8 +45,8 @@ public class CLPManager {
     private boolean finalizaOp;
 
     public CLPManager() {
-        master = new MasterTest("192.168.15.12", 502);
-        //master = new MasterTest("10.0.1.15", 502);
+        //master = new MasterTest("192.168.15.12", 502);
+        master = new MasterTest("10.0.1.15", 502);
         finalizaOp = false;
     }
 

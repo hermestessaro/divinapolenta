@@ -41,6 +41,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import android.os.Handler;
+import android.widget.Toast;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -126,15 +127,19 @@ public class CervejaActivity extends AppCompatActivity {
             getJSONCervejasSincrono("http://divinapolenta.cloud.fluidobjects.com/get_cervejas");
             loading.dismiss();
             showBeer();
-
-            /* DEBUG
             findBT();
 
             try {
                 openBT();
             } catch (IOException e) {
+                //Toast.makeText(this, "Erro bluetooth; o leitor correto esta pareado?", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
-            }*/
+            } catch (RuntimeException y){
+                Toast.makeText(this, "Erro bluetooth; o leitor correto esta pareado?", Toast.LENGTH_LONG).show();
+                y.printStackTrace();
+                Intent intent = new Intent(CervejaActivity.this, OperadorActivity.class);
+                startActivity(intent);
+            }
         }
         else{
             new AlertDialog.Builder(this)
@@ -456,11 +461,27 @@ public class CervejaActivity extends AppCompatActivity {
         TextView desc = (TextView) findViewById(R.id.descricao);
         desc.setText(String.valueOf(ceva.getDescricao()));
         TextView ab = (TextView) findViewById(R.id.teor);
-        ab.setText("Teor Alcoólico: " + String.valueOf(ceva.getAb()));
+        float teor = ceva.getAb();
+        ab.setText("Teor Alcoólico: " + Float.toString(teor)+" %");
         TextView valor = (TextView) findViewById(R.id.valor);
         valor.setText("R$ " + String.valueOf(ceva.getValor()) + " / 100ml");
         TextView ebc = (TextView) findViewById(R.id.ebc);
-        ebc.setText("IBU: " + String.valueOf(ceva.getIbu()) + "| EBC: " + String.valueOf(ceva.getEbc()));
+
+        String textEbc="";
+        if(ceva.getIbu()>0){
+            textEbc+="IBU: " + String.valueOf(ceva.getIbu());
+            if(ceva.getEbc()>0) {
+                textEbc += " | EBC: " + Float.toString(ceva.getEbc());
+            }
+        }
+        else
+        {
+            if(ceva.getEbc()>0) {
+                textEbc += "EBC: " + Float.toString(ceva.getEbc());
+            }
+        }
+
+        ebc.setText(textEbc);
         ImageView imagem = (ImageView) findViewById(R.id.imageView3);
         imagem.setImageBitmap(ceva.getImageBM());
         this.valorCeva = ceva.getValor();
@@ -683,7 +704,6 @@ public class CervejaActivity extends AppCompatActivity {
 
                         linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custo);
                         linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
-                        sleep(4000);
                         Log.d("5", "quinta mensagem");
                         Log.d("valores", String.valueOf(custo) +","+ String.valueOf(saldo_aux)+","+ String.valueOf(volume));
                     }
@@ -694,7 +714,9 @@ public class CervejaActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            atualizaClienteDrupal(); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
+                            if(saldo_aux > 1) {
+                                atualizaClienteDrupal(); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -757,11 +779,11 @@ public class CervejaActivity extends AppCompatActivity {
 
 
 
-    public void simulaCartao(View view){
+    /*public void simulaCartao(View view){
         try {
             preparesCLP("80EF00AA");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

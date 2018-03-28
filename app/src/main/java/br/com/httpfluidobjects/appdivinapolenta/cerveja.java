@@ -15,7 +15,7 @@ public class cerveja {
     String fabricante;
     float valor;
     int ibu;
-    int ebc;
+    float ebc;
     float consumo;
     String logo_name;
     String logo_uri;
@@ -61,7 +61,7 @@ public class cerveja {
         if(s != "null") ibu = Integer.parseInt(s);
     }
     public void setEbc(String s){
-        if(s != "null") ebc = Integer.parseInt(s);
+        if(s != "null") ebc = Float.parseFloat(s);
     }
 
     public void setImageBM(Bitmap b){
@@ -92,11 +92,11 @@ public class cerveja {
     public int getIbu(){
         return ibu;
     }
-    public int getEbc(){
+    public float getEbc(){
         return ebc;
     }
     public float getAb(){
-        return ebc;
+        return ab;
     }
     public float getConsumo(){
         return consumo;
