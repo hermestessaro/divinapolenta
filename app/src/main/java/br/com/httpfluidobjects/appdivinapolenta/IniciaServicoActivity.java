@@ -1,17 +1,22 @@
 package br.com.httpfluidobjects.appdivinapolenta;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,17 +27,15 @@ import java.util.UUID;
 
 public class IniciaServicoActivity extends AppCompatActivity {
 
-    String entrada;
-    BluetoothAdapter mBluetoothAdapter;
-    BluetoothDevice mmDevice;
-    BluetoothSocket mmSocket;
-    OutputStream mmOutputStream;
-    InputStream mmInputStream;
-    ArrayList<operador> dadosOperadores;
+
+
     Thread workerThread;
     byte[] readBuffer;
     int readBufferPosition;
     volatile boolean stopWorker;
+    String entrada;
+    ArrayList<operador> dadosOperadores;
+    String readerBT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +54,25 @@ public class IniciaServicoActivity extends AppCompatActivity {
         GetOperadores operadores = new GetOperadores();
         dadosOperadores = operadores.getDados();
 
-        Intent intent = getIntent();
-        int operou = intent.getIntExtra("operou", 0);
 
-        if(operou == 0) {
-            //master = new MasterTest("192.168.1.15", 502);
+        //master = new MasterTest("192.168.1.15", 502);
 
-           findBT();
+       findBT();
+        try {
+            openBT();
+            beginListenForData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (RuntimeException y) {
+            Toast.makeText(this, "Erro bluetooth; o leitor correto esta pareado?", Toast.LENGTH_LONG).show();
             try {
-                openBT();
-            } catch (IOException e) {
+                workerThread.sleep(3000);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.exit(0);
+        }
 
-        }
-        else{
-            showButtons();
-        }
 
 
 
@@ -75,47 +80,80 @@ public class IniciaServicoActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+        super.onResume();
         Button telaPrincipal = (Button) findViewById(R.id.btnEntrar);
         Button telaOp = (Button) findViewById(R.id.btnEntrarOp);
         Button telaMonitora = (Button) findViewById(R.id.btnEntrarMonitora);
 
-        //telaPrincipal.setVisibility(View.INVISIBLE);
-        //telaOp.setVisibility(View.INVISIBLE);
-        //telaMonitora.setVisibility(View.INVISIBLE);
-        super.onResume();
+        Intent intent = getIntent();
+        int operou = intent.getIntExtra("operou", 0);
+        Log.d("operou", String.valueOf(operou));
+        if(operou == 0) {
+            telaPrincipal.setVisibility(View.INVISIBLE);
+            telaOp.setVisibility(View.INVISIBLE);
+            int fator = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("FATOR", "0"));
+            if(fator == 0){
+                new AlertDialog.Builder(this)
+                        .setTitle("Nenhuma chopeira selecionada!")
+                        .setMessage("Por favor, peça ao operador que selecione uma chopeira.")
+                        .setNeutralButton("ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(IniciaServicoActivity.this, OperadorActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+            }
+            //telaMonitora.setVisibility(View.INVISIBLE);
+        }
+        else{
+            beginListenForData();
+        }
     }
-
-
-
-
-
-
 
 
     void findBT()
     {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(mBluetoothAdapter == null)
+        ((BluetoothManager) this.getApplication()).setmBluetoothAdapter(BluetoothAdapter.getDefaultAdapter());
+
+        if(((BluetoothManager) this.getApplication()).getmBluetoothAdapter() == null)
         {
             //myLabel.setText("No bluetooth adapter available");
         }
 
-        if(!mBluetoothAdapter.isEnabled())
+        if(!((BluetoothManager) this.getApplication()).getmBluetoothAdapter() .isEnabled())
         {
             Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBluetooth, 0);
         }
 
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        Set<BluetoothDevice> pairedDevices = ((BluetoothManager) this.getApplication()).getmBluetoothAdapter().getBondedDevices();
         if(pairedDevices.size() > 0)
         {
             for(BluetoothDevice device : pairedDevices)
             {
-                if(device.getName().contains("CHOPEIRA-01") || device.getName().contains("CHOPEIRA-02") || device.getName().contains("CHOPEIRA-03"))
-                {
-                    mmDevice = device;
+                if(device.getName().contains("CHOPEIRA-01")){
+                    readerBT = "CHOPEIRA-01";
+                    ((BluetoothManager) this.getApplication()).setMmDevice(device);
                     break;
                 }
+                if(device.getName().contains("CHOPEIRA-02")){
+                    readerBT = "CHOPEIRA-02";
+                    ((BluetoothManager) this.getApplication()).setMmDevice(device);
+                    break;
+                }
+                if(device.getName().contains("CHOPEIRA-03")){
+                    readerBT = "CHOPEIRA-03";
+                    ((BluetoothManager) this.getApplication()).setMmDevice(device);
+                    break;
+                }
+                if(device.getName().contains("Dragon Fluid BT")){
+                    readerBT = "Dragon Fluid BT";
+                    ((BluetoothManager) this.getApplication()).setMmDevice(device);
+                    break;
+                }
+
             }
         }
     }
@@ -123,12 +161,10 @@ public class IniciaServicoActivity extends AppCompatActivity {
     void openBT() throws IOException
     {
         UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //Standard SerialPortService ID
-        mmSocket = mmDevice.createRfcommSocketToServiceRecord(uuid);
-        mmSocket.connect();
-        mmOutputStream = mmSocket.getOutputStream();
-        mmInputStream = mmSocket.getInputStream();
-
-        beginListenForData();
+        ((BluetoothManager) this.getApplication()).setMmSocket(((BluetoothManager) this.getApplication()).getMmDevice().createRfcommSocketToServiceRecord(uuid));
+        ((BluetoothManager) this.getApplication()).getMmSocket().connect();
+        ((BluetoothManager) this.getApplication()).setMmOutputStream(((BluetoothManager) this.getApplication()).getMmSocket().getOutputStream());
+        ((BluetoothManager) this.getApplication()).setMmInputStream(((BluetoothManager) this.getApplication()).getMmSocket().getInputStream());
 
     }
 
@@ -136,7 +172,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
     {
         final Handler handler = new Handler();
         final byte delimiter = 10; //This is the ASCII code for a newline character
-
+        final InputStream mmInputStream = ((BluetoothManager) this.getApplication()).getMmInputStream();
         stopWorker = false;
         readBufferPosition = 0;
         readBuffer = new byte[1024];
@@ -167,24 +203,19 @@ public class IniciaServicoActivity extends AppCompatActivity {
                                     {
                                         public void run()
                                         {
-                                            Log.d("primeiratela", data);
-                                            //StringBuffer sb = new StringBuffer(data);
-                                            //sb.reverse();
                                             int i = 0;
-
-
-                                            for(i=0; i<dadosOperadores.size(); i++) {
+                                            /*for(i=0; i<dadosOperadores.size(); i++) {
                                                 if (data.contains(dadosOperadores.get(i).getCartao())) {//se cartao de operador dispara a ativity operador
                                                     Log.d("TAD3", data.toString());
                                                     showButtons();
                                                     break;
                                                 }
-                                            }
-
-                                            /*
-                                            if(data.equals("E038FC87")) {
-                                                showButtons();
                                             }*/
+
+                                            //isso é pra debug
+                                            if(!data.isEmpty()){
+                                                showButtons();
+                                            }
                                         }
                                     });
                                 }
@@ -207,18 +238,19 @@ public class IniciaServicoActivity extends AppCompatActivity {
     }
 
 
-    void closeBT() throws IOException
-    {
+    void closeBT() throws IOException {
         stopWorker = true;
-        mmOutputStream.close();
-        mmInputStream.close();
-        mmSocket.close();
+        ((BluetoothManager) this.getApplication()).getMmOutputStream().close();
+        ((BluetoothManager) this.getApplication()).getMmInputStream().close();
+        ((BluetoothManager) this.getApplication()).getMmSocket().close();
+
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) { //ao passar o cartão lê cada caractere como uma tecla, chamando a função 8 vezes
 
-        char pressedKey = (char) event.getUnicodeChar();
+        /*char pressedKey = (char) event.getUnicodeChar();
         entrada += Character.toString(pressedKey);//armazena cada caractere na variável entrada
         Log.d("TAD", entrada);
         showButtons();
@@ -235,7 +267,8 @@ public class IniciaServicoActivity extends AppCompatActivity {
 
             }
             entrada="";
-        }
+        }*/
+        showButtons();
         return super.onKeyDown(keyCode, event);
     }
 
@@ -245,11 +278,12 @@ public class IniciaServicoActivity extends AppCompatActivity {
     }
 
     public void btnEntraMonitora(View view) {
-        Intent intent = new Intent(IniciaServicoActivity.this, MonitoraActivity.class);
-        startActivity(intent);
+        showButtons();
+        //Intent intent = new Intent(IniciaServicoActivity.this, MonitoraActivity.class);
+        //startActivity(intent);
     }
     public void btnEntra(View view) throws IOException {
-        closeBT();
+        //closeBT();
         Intent intent = new Intent(IniciaServicoActivity.this, CervejaActivity.class);
         startActivity(intent);
     }

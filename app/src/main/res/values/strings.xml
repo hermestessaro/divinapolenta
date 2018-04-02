@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">AppDivinaPolenta</string>
+    <string name="app_name">Divina Polenta Chopeiras</string>
     <string name="start_screen_first_message">1 - Conecte o tablet no leitor via Bluetooth.</string>
     <string name="start_screen_second_message">2 - Passe o cartão de operador para iniciar o serviço.</string>
+    <string name="linha1_1">Aproxime o cartão</string>
+    <string name="linha2_1">Espere aparecer o seu nome e saldo para servir.</string>
 </resources>

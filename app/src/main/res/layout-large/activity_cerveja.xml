@@ -5,6 +5,7 @@
     android:id="@+id/activity_cerveja"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     tools:context="br.com.httpfluidobjects.appdivinapolenta.CervejaActivity">
 
     <RelativeLayout
@@ -18,13 +19,13 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView3"
             android:layout_alignLeft="@+id/teor"
             android:layout_alignStart="@+id/teor"
+            android:layout_below="@+id/imageView3"
             android:text="TIPO: PILSEN"
             android:textAlignment="center"
             android:textColor="@android:color/holo_red_light"
-            android:textSize="26sp"
+            android:textSize="38sp"
             android:textStyle="normal|bold" />
 
 
@@ -35,10 +36,10 @@
             android:layout_alignLeft="@+id/ebc"
             android:layout_alignStart="@+id/ebc"
             android:layout_below="@+id/title"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="45dp"
             android:text="Teor Alcoólico: 5.0%"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
@@ -48,10 +49,10 @@
             android:layout_alignLeft="@+id/valor"
             android:layout_alignStart="@+id/valor"
             android:layout_below="@+id/teor"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="45dp"
             android:text="IBU: 5 | EBC: 7"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
@@ -63,10 +64,10 @@
             android:layout_below="@+id/ebc"
             android:layout_marginLeft="21dp"
             android:layout_marginStart="21dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="45dp"
             android:text="R$: 4,00 / 100ml"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
@@ -107,7 +108,8 @@
                 android:layout_marginTop="126dp"
                 android:text="Produzida com ingredientes 100% naturais, sem conservantes, com uma fórmula que se tornou sinônimo de simplicidade e perfeição: água, malte, lúpulo e nada mais."
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
         </RelativeLayout>
 
         <ImageView
@@ -119,6 +121,17 @@
             android:layout_alignRight="@+id/rotulo_amarelo"
             android:layout_marginBottom="-120dp"
             app:srcCompat="@drawable/cerveja01" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/title"
+            android:layout_alignEnd="@+id/teor"
+            android:layout_alignRight="@+id/teor"
+            android:layout_marginBottom="84dp"
+            android:onClick="simulaCartao"
+            android:text="Button" />
 
     </RelativeLayout>
 
@@ -137,20 +150,11 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="17dp"
-            android:text="Passe o cartão"
+            android:text="@string/linha1_1"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+            android:textSize="26sp" />
 
-        <TextView
-            android:id="@+id/linha3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linha1"
-            android:layout_marginTop="10dp"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/linha2"
@@ -160,10 +164,10 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="12dp"
-            android:text="Se beber não dirija"
+            android:text="@string/linha2_1"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
+            android:textSize="26sp" />
     </RelativeLayout>
 
 </RelativeLayout>

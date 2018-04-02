@@ -1,5 +1,6 @@
 package br.com.httpfluidobjects.appdivinapolenta;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -45,8 +46,9 @@ public class CLPManager {
     private boolean finalizaOp;
 
     public CLPManager() {
-        //master = new MasterTest("192.168.15.12", 502);
-        master = new MasterTest("10.0.1.15", 502);
+        master = new MasterTest("192.168.15.7", 502);
+        //master = new MasterTest("10.0.1.15", 502);
+
         finalizaOp = false;
     }
 
@@ -57,10 +59,9 @@ public class CLPManager {
 
     //ajusta o endereco dos registradores de acordo com o numero da chopeira
     public void inicializaEndRegistradores(int chopeira) {
-        //chopeira -= 1;
+        //chopeira = chopeira - 1;
         Log.d("chopeira", String.valueOf(chopeira));
-        chopeira = chopeira - 1;
-        int regInicial = 3000 + (chopeira  * 30) - 1;
+        int regInicial = 3000 + (chopeira  * 30);
         //int regInicial = 1;
 
         BATELADA_REG = regInicial + 0; //2999
@@ -80,16 +81,18 @@ public class CLPManager {
     // - - - - - - - - - -  CLIENTE - - - - - - - - - - - //
 
     //É chamado para abrir a batelada apos passar o cartão
-    public boolean open(int numeroChopeira) {
+    public boolean open(int numeroChopeira, int fator) {
         Log.d("t1", "vai tentar abrir a batelada");
+
         inicializaEndRegistradores(numeroChopeira);
 
         boolean aux = master.readRegister(STATUS_REG) == 10;
         Log.d("valor de aux", String.valueOf(aux));
         if (aux) {
-            master.writeRegisters(MULT_FACTOR_REG, 390);
-            //master.writeRegisters(MAX_VOL_REG, 500); //seta o volume maximo
-            master.writeRegisters(STATUS_REG, 20); //seta status para programado
+
+            master.writeRegisters(MULT_FACTOR_REG, fator);
+            //master.writeRegisters(MAX_VOL_REG, maxVol); //seta o volume maximo
+            //master.writeRegisters(STATUS_REG, 20); //seta status para programado
             master.writeRegisters(BATELADA_REG, 1); //abre a batelada
             statusBatelada = 1;
             Log.d("teste", "abriu batelada");
@@ -130,6 +133,18 @@ public class CLPManager {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     // - - - - - - - - - - OPERADOR - - - - - - - - - - - //
     void openOp() {
         inicializaEndRegistradores(-1);
@@ -146,9 +161,9 @@ public class CLPManager {
 
     boolean simulaServida() {
         if (master.readRegister(STATUS_REG) == 10) {
-            master.writeRegisters(MULT_FACTOR_REG, 15);
-            master.writeRegisters(MAX_VOL_REG, volumeProgramado); //seta o volume maximo
-            master.writeRegisters(STATUS_REG, 20); //seta status para programado
+            //master.writeRegisters(MULT_FACTOR_REG, 250);
+            //master.writeRegisters(MAX_VOL_REG, volumeProgramado); //seta o volume maximo
+            //master.writeRegisters(STATUS_REG, 20); //seta status para programado
             master.writeRegisters(BATELADA_REG, 1); //abre a batelada
             statusBatelada = 1;
             Log.d("teste", "abriu batelada");
@@ -280,5 +295,10 @@ public class CLPManager {
 
     public void setMaxVol(int max){
         master.writeRegisters(MAX_VOL_REG, max);
+        Log.d("maximo", String.valueOf(max));
+    }
+
+    public void closeCon(){
+        master.closesCon();
     }
 }

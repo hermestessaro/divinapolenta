@@ -34,7 +34,7 @@ public class MasterTest{
         this.port = port;
         con = new TCPMasterConnection(addr);
         con.setPort(port);
-        con.setTimeout(3000);
+        con.setTimeout(80000);
         try {
             con.connect();
             Log.d("t", "eu sou o socket");
@@ -102,5 +102,9 @@ public class MasterTest{
         return transaction.getResponse();
     }
 
+    public void closesCon()
+    {
+        con.close();
+    }
 
 }

@@ -37,6 +37,8 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
 
 
     String idNovaChopeira;
+    String fatorDePulso;
+    EditText edtFatorPulso;
     chopeira torneira;
     GetChopeiraById getChopeira;
     CLPManager clpManager;
@@ -60,13 +62,18 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
         super.onResume();
         selectChopeira();
         String id_chopeira = PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CHOPEIRA", "0");
-
+        String fator = PreferenceManager.getDefaultSharedPreferences(this).getString("FATOR", "0");
         idNovaChopeira = id_chopeira;
 
         txtNomeChopeira = (TextView) findViewById(R.id.txtNomeChopeira);
         txtVolumeBarril = (TextView) findViewById(R.id.txtVolumeBarril);
+        edtFatorPulso = (EditText) findViewById(R.id.edtFatorPulso);
+        edtFatorPulso.setText(fator);
 
-        edtVolumeAbastecido = (EditText) findViewById(R.id.edtVolumeAbastecido);
+
+
+
+        //edtVolumeAbastecido = (EditText) findViewById(R.id.edtVolumeAbastecido);
 
         torneira = getChopeira.getDados(idNovaChopeira);
         txtVolumeBarril.setText("Volume no barril: " + String.valueOf(torneira.getQuantidade()));
@@ -123,9 +130,10 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
 
     public void confirma(View view) {
         torneira = getChopeira.getDados(idNovaChopeira);
+        fatorDePulso = edtFatorPulso.getText().toString();
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("ID_CERVEJA", String.valueOf(torneira.getIdCerveja())).apply();
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("NID_CHOPEIRA", String.valueOf(torneira.getNid())).apply();
-
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("FATOR", String.valueOf(fatorDePulso)).apply();
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString("ID_CHOPEIRA", idNovaChopeira).apply();
         //TODO ajeitar isso
         /*String volumeAbastecidoStr = edtVolumeAbastecido.getText().toString();
@@ -137,8 +145,9 @@ public class OperadorActivity extends AppCompatActivity implements AdapterView.O
                 e.printStackTrace();
             }
         }*/
-        Intent intent = new Intent(OperadorActivity.this, CervejaActivity.class);
-//        intent.putExtra("operou", 1);
+        Intent intent = new Intent(OperadorActivity.this, IniciaServicoActivity.class);
+        //intent.putExtra("fator", Integer.valueOf(edtFatorPulso.getText().toString()));
+        intent.putExtra("operou", 1);
         startActivity(intent);
     }
 

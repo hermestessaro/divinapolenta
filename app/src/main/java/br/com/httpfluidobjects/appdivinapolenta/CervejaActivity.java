@@ -26,6 +26,7 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -36,6 +37,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -49,45 +51,34 @@ import static android.os.SystemClock.sleep;
 
 public class CervejaActivity extends AppCompatActivity {
 
-    public static final String EXTRA_CEVAID = "cevaId";
-    public static final String EXTRA_CHOPEIRAID = "chopeiraId";
     public int cevaId;
     public int chopeiraId;
     public int chopeiraNid;
     cliente cliente = null;
     cerveja ceva;
-    int cont;
-    CLPManager clpManager = new CLPManager();
     int volume;
     int volume_aux;
-    double valor;
-    static TextView  linha1;
-    static TextView linha2;
-    TextView txtSeBeber;
+    public TextView  linha1;
+    public TextView linha2;
     double valorCeva;
     boolean finaliza;
-    int idPedido;
     String entrada;
-    String idCartao;
-    BluetoothAdapter mBluetoothAdapter;
+    /*BluetoothAdapter mBluetoothAdapter;
     BluetoothDevice mmDevice;
     BluetoothSocket mmSocket;
     OutputStream mmOutputStream;
-    InputStream mmInputStream;
+    InputStream mmInputStream;*/
     Thread workerThread;
     byte[] readBuffer;
     int readBufferPosition;
     volatile boolean stopWorker;
-    int i =0;
-    boolean serviu;
-    boolean terminou;
-    boolean cartao;
+    int fator;
+
     float saldo_aux;
     float custo;
-    int pulsos;
-    final Handler mHandler = new Handler();
-    Thread t1;
-    int count = 0;
+    CLPManager clpManager;
+    ArrayList<cliente> clientes = new ArrayList<cliente>();
+
 
 
     @Override
@@ -98,17 +89,6 @@ public class CervejaActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        serviu = false;
-        terminou = false;
-        cartao = false;
-        Log.d("SERVIU: ", String.valueOf(serviu) + "   Terminou: " + String.valueOf(terminou) + "   Cartão: " + String.valueOf(cartao));
-        linha1 = (TextView) findViewById(R.id.linha1);
-        linha2 = (TextView) findViewById(R.id.linha2);
-        linha1.setText("Passe o cartão");
-        linha2.setText("se beber não dirija");
-
-
-
         retriveSavedImage();
 
         //MUDAR O VALOR DEFAULT
@@ -116,21 +96,20 @@ public class CervejaActivity extends AppCompatActivity {
         //cevaId = 1;
         chopeiraId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CHOPEIRA", "0"));
         chopeiraNid = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("NID_CHOPEIRA", "0"));
+        fator = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("FATOR", "0"));
         Log.d("ADM", String.valueOf(chopeiraId));
-
 
         //TODO: verificar se ha conexao com a internet
 
         if(cevaId != 0 && chopeiraId != 0) {
-            ProgressDialog loading;
-            loading = ProgressDialog.show(CervejaActivity.this, "Por favor aguarde...", null, true, false);
-            getJSONCervejasSincrono("http://divinapolenta.cloud.fluidobjects.com/get_cervejas");
-            loading.dismiss();
-            showBeer();
-            findBT();
 
-            try {
-                openBT();
+            getJSONCervejasSincrono("http://divinapolenta.cloud.fluidobjects.com/get_cervejas");
+            showBeer();
+            getJSONTodosClientesAssincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes");
+            //findBT();
+
+            /*try {
+                //openBT();
             } catch (IOException e) {
                 //Toast.makeText(this, "Erro bluetooth; o leitor correto esta pareado?", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
@@ -139,7 +118,10 @@ public class CervejaActivity extends AppCompatActivity {
                 y.printStackTrace();
                 Intent intent = new Intent(CervejaActivity.this, OperadorActivity.class);
                 startActivity(intent);
-            }
+            }*/
+
+            beginListenForData();
+
         }
         else{
             new AlertDialog.Builder(this)
@@ -162,6 +144,368 @@ public class CervejaActivity extends AppCompatActivity {
     }
 
 
+
+    //Conecta numa url e baixa a logo da cerveja
+    public Bitmap getBitmapFromURL(String src) {
+        try {
+            java.net.URL url = new java.net.URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //Bota a logo da cerveja na image view
+    public void showBeer() {
+        //setContentView(R.layout.activity_cerveja);
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText(String.valueOf(ceva.getTitle()));
+        TextView desc = (TextView) findViewById(R.id.descricao);
+        desc.setText(String.valueOf(ceva.getDescricao()));
+        TextView ab = (TextView) findViewById(R.id.teor);
+        float teor = ceva.getAb();
+        ab.setText("Teor Alcoólico: " + Float.toString(teor)+" %");
+        TextView valor = (TextView) findViewById(R.id.valor);
+        valor.setText("R$ " + String.valueOf(ceva.getValor()) + " / 100ml");
+        TextView ebc = (TextView) findViewById(R.id.ebc);
+
+        String textEbc="";
+        if(ceva.getIbu()>0){
+            textEbc+="IBU: " + String.valueOf(ceva.getIbu());
+            if(ceva.getEbc()>0) {
+                textEbc += " | EBC: " + Float.toString(ceva.getEbc());
+            }
+        }
+        else
+        {
+            if(ceva.getEbc()>0) {
+                textEbc += "EBC: " + Float.toString(ceva.getEbc());
+            }
+        }
+
+        ebc.setText(textEbc);
+        ImageView imagem = (ImageView) findViewById(R.id.imageView3);
+        imagem.setImageBitmap(ceva.getImageBM());
+        this.valorCeva = ceva.getValor();
+
+        entrada = "";
+
+    }
+
+    //Transforma a imagem em string e guarda em preferencias
+    private void saveLogo(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("FOTO_CHOPP", imageEncoded).apply();
+    }
+
+    //Pega imagem já salva em preferencias e bota na image view
+    private void retriveSavedImage() {
+        String photo = PreferenceManager.getDefaultSharedPreferences(this).getString("FOTO_CHOPP", "");
+
+        if (!photo.equals("")) {
+            byte[] b = Base64.decode(photo, Base64.DEFAULT);
+            InputStream is = new ByteArrayInputStream(b);
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            setContentView(R.layout.activity_cerveja);
+            ImageView imagem = (ImageView) findViewById(R.id.imageView3);
+            imagem.setImageBitmap(bitmap);
+        }
+    }
+
+
+
+
+    /*void findBT()
+    {
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        String readerName = "CHOPEIRA-0"+chopeiraId;
+        //String readerName = "CHOPEIRA-01";
+
+        Log.d("reader", readerName);
+
+        if(mBluetoothAdapter == null)
+        {
+            //myLabel.setText("No bluetooth adapter available");
+        }
+
+        if(!mBluetoothAdapter.isEnabled())
+        {
+            Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBluetooth, 0);
+        }
+
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        if(pairedDevices.size() > 0)
+        {
+            for(BluetoothDevice device : pairedDevices)
+            {
+                if(device.getName().contains(readerName))
+                {
+                    mmDevice = device;
+                    break;
+                }
+            }
+        }
+    }*/
+
+    void openBT() throws IOException
+    {
+        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //Standard SerialPortService ID
+        ((BluetoothManager) this.getApplication()).setMmSocket(((BluetoothManager) this.getApplication()).getMmDevice().createRfcommSocketToServiceRecord(uuid));
+        ((BluetoothManager) this.getApplication()).getMmSocket().connect();
+        ((BluetoothManager) this.getApplication()).setMmOutputStream(((BluetoothManager) this.getApplication()).getMmSocket().getOutputStream());
+        ((BluetoothManager) this.getApplication()).setMmInputStream(((BluetoothManager) this.getApplication()).getMmSocket().getInputStream());
+
+
+    }
+
+    void beginListenForData()
+    {
+        final Handler handler = new Handler();
+        final byte delimiter = 10; //This is the ASCII code for a newline character
+        final InputStream mmInputStream = ((BluetoothManager) this.getApplication()).getMmInputStream();
+        stopWorker = false;
+        readBufferPosition = 0;
+        readBuffer = new byte[1024];
+        workerThread = new Thread(new Runnable()
+        {
+            public void run()
+            {
+                while(!Thread.currentThread().isInterrupted() && !stopWorker)
+                {
+                    try
+                    {
+                        int bytesAvailable = mmInputStream.available();
+                        if(bytesAvailable > 0)
+                        {
+                            byte[] packetBytes = new byte[bytesAvailable];
+                            mmInputStream.read(packetBytes);
+                            for(int i=0;i<bytesAvailable;i++)
+                            {
+                                byte b = packetBytes[i];
+                                if(b == delimiter)
+                                {
+                                    byte[] encodedBytes = new byte[readBufferPosition];
+                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+                                    entrada = new String(encodedBytes, "US-ASCII");
+                                    readBufferPosition = 0;
+
+                                    handler.post(new Runnable()
+                                    {
+                                        public void run()
+                                        {
+                                            Log.d("leituracartao", entrada);
+                                            //StringBuffer sb = new StringBuffer(entrada);
+                                            //sb.reverse();
+                                            if(entrada.length() >= 8){
+                                                try {
+                                                    preparesCLP(entrada);
+                                                    entrada = "";
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    readBuffer[readBufferPosition++] = b;
+                                }
+                            }
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        stopWorker = true;
+                    }
+                }
+            }
+        });
+
+        workerThread.start();
+    }
+
+    //------------- CLP -----------//
+
+
+    public void preparesCLP(String idCartao) throws JSONException { //executa ao clicar no botão (passar cartão)
+
+        clpManager = new CLPManager();
+        finaliza = false;
+        Log.d("preparesCLP", "recebeu id do cartao" + idCartao);
+        //getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
+
+        for(int i = 0; i<clientes.size();i++) {
+            if (clientes.get(i).isValid() && clientes.get(i).getCartao().equals(idCartao)) {
+                cliente = clientes.get(i);
+                break;
+
+            }
+        }
+        if(cliente == null) {
+            linha1 = (TextView) findViewById(R.id.linha1);
+            linha1.setText("Cliente não cadastrado");
+        }
+        else {
+
+            Log.d("1", "primeira mensagem");
+            linha1 = (TextView) findViewById(R.id.linha1);
+            linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + cliente.getSaldo());
+            linha2 = (TextView) findViewById(R.id.linha2);
+            linha2.setText("Pode se servir");
+            if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
+                Log.d("clp", "abriu");
+                setMaxVolume();
+                Log.d("volumemax", "setou");
+                monitoraBatelada(); //monitora as informações da batelada
+
+            } else {
+                Log.d("2", "segunda mensagem");
+                linha1 = (TextView) findViewById(R.id.linha1);
+                linha1.setText("Aproxime o cartão");
+                linha2 = (TextView) findViewById(R.id.linha2);
+                linha2.setText("se beber não dirija");
+                entrada = "";
+            }
+        }
+
+
+
+        //int fator = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("FATOR", "0"));
+
+
+    }
+
+
+    public void atualizaInfoPedido() { //pega informações registradas no clp manager e atualiza as a tela
+        final Handler mHandler = new Handler();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (!finaliza) {
+                    sleep(70);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            volume_aux = volume;
+                            volume = clpManager.getVolume(); //pega o volume registrado em tempo real
+                            finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
+
+                            if (volume != volume_aux) { //Verifica se houve alteração no volume
+                                linha2 =(TextView) findViewById(R.id.linha2);
+                                linha2.setText("Serviu "+volume+"ml, valor R$ "+ getValorStr());
+                                Log.d("3", "terceira mensagem");
+
+                            }
+
+                        }
+                    });
+                }
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        saldo_aux = cliente.getSaldo();
+                        custo = (ceva.getValor()/100)*volume;
+                        saldo_aux = saldo_aux - custo;
+
+                        linha1 =(TextView) findViewById(R.id.linha1);
+                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custo);
+                        linha2 =(TextView) findViewById(R.id.linha2);
+                        linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
+                        Log.d("5", "quinta mensagem");
+                        Log.d("valores", String.valueOf(custo) +","+ String.valueOf(saldo_aux)+","+ String.valueOf(volume));
+
+                    }
+                });
+                sleep(3000);
+                entrada = "";
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if(saldo_aux > 1) {
+                                atualizaClienteDrupal(); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        clpManager.closeCon();
+                        linha1.setText("Aproxime o cartão");
+                        linha2.setText("Espere aparecer o seu nome e saldo para servir");
+                        Log.d("4", "quarta mensagem");
+
+                    }
+                });
+
+            }
+        }).start();
+
+    }
+
+    public String getValorStr() { //calcula o valor atual de acordo com o volume
+        double valorDbl = (this.valorCeva / 100) * volume;
+        String resultado = String.format("%.2f", valorDbl);
+        return resultado;
+    }
+
+
+    public void monitoraBatelada() { //abre uma nova thread para escutar os registradores do clp
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                clpManager.monitorsCLP();
+            }
+        });
+        t.start();
+        atualizaInfoPedido(); //atualiza as informações na tela do aplicativo
+
+    }
+
+
+
+    private void setMaxVolume(){
+        float max = (cliente.getSaldo()/(ceva.getValor())*100);
+        if(max > 500){
+            max = 500;
+        }
+        clpManager.setMaxVol((int) max);
+        Log.d("max vol", String.valueOf(max));
+    }
+
+
+
+    public void atualizaClienteDrupal() throws JSONException { //pega informações registradas no clp manager e atualiza as a tela
+
+
+        JSONObject jobj;
+        jobj = new JSONObject();
+
+        jobj.put("id_cliente", cliente.getId()); //id_item_automatize
+
+        jobj.put("novo_saldo", saldo_aux);
+        String data = jobj.toString();
+
+        String url = "http://divinapolenta.cloud.fluidobjects.com/atualiza_saldo";
+        ExportJSON.sendJSON(url, data);
+
+    }
+
+
+
+
+
+    //----------------JSON----------------//
     //Conecta com a url e busca as cervejas
     private void getJSONCervejas(String url) {
         class GetJSON extends AsyncTask<String, Void, String> {
@@ -436,354 +780,128 @@ public class CervejaActivity extends AppCompatActivity {
         }
     }
 
-
-    //Conecta numa url e baixa a logo da cerveja
-    public Bitmap getBitmapFromURL(String src) {
+    private void getJSONTodosClientesSincrono(String uri){
+        BufferedReader bufferedReader = null;
         try {
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
+            URL url = new URL(uri);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            StringBuilder sb = new StringBuilder();
+
+            bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+            String json;
+
+            while ((json = bufferedReader.readLine()) != null) {
+                sb.append(json + "\n");
+            }
+
+            sb.append("");
+            String s = sb.toString().trim();
+
+            JSONObject jsonObj = new JSONObject(s);
+            JSONArray jsonArray = jsonObj.getJSONArray("cliente");
+
+            int y = jsonArray.length();
+            int achou = 0;
+
+            for (int i = 0; i < y; i++) {
+                JSONObject jsonClienteObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
+
+                cliente = new cliente();
+                cliente.setCartao(jsonClienteObject.getString("cartao"));
+                cliente.setCpf(jsonClienteObject.getString("cpf"));
+                cliente.setId(Integer.parseInt(jsonClienteObject.getString("id")));
+                cliente.setNome(jsonClienteObject.getString("nome"));
+                cliente.setSaldo(Float.parseFloat(jsonClienteObject.getString("saldo")));
+                cliente.setValid(true);
+
+                clientes.add(cliente);
+
+
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-    //Bota a logo da cerveja na image view
-    public void showBeer() {
-        //setContentView(R.layout.activity_cerveja);
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText(String.valueOf(ceva.getTitle()));
-        TextView desc = (TextView) findViewById(R.id.descricao);
-        desc.setText(String.valueOf(ceva.getDescricao()));
-        TextView ab = (TextView) findViewById(R.id.teor);
-        float teor = ceva.getAb();
-        ab.setText("Teor Alcoólico: " + Float.toString(teor)+" %");
-        TextView valor = (TextView) findViewById(R.id.valor);
-        valor.setText("R$ " + String.valueOf(ceva.getValor()) + " / 100ml");
-        TextView ebc = (TextView) findViewById(R.id.ebc);
+    private void getJSONTodosClientesAssincrono(String url) {
+        class GetJSON extends AsyncTask<String, Void, String> {
+            ProgressDialog loading;
 
-        String textEbc="";
-        if(ceva.getIbu()>0){
-            textEbc+="IBU: " + String.valueOf(ceva.getIbu());
-            if(ceva.getEbc()>0) {
-                textEbc += " | EBC: " + Float.toString(ceva.getEbc());
-            }
-        }
-        else
-        {
-            if(ceva.getEbc()>0) {
-                textEbc += "EBC: " + Float.toString(ceva.getEbc());
-            }
-        }
-
-        ebc.setText(textEbc);
-        ImageView imagem = (ImageView) findViewById(R.id.imageView3);
-        imagem.setImageBitmap(ceva.getImageBM());
-        this.valorCeva = ceva.getValor();
-
-        entrada = "";
-    }
-
-    //Transforma a imagem em string e guarda em preferencias
-    private void saveLogo(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString("FOTO_CHOPP", imageEncoded).apply();
-    }
-
-    //Pega imagem já salva em preferencias e bota na image view
-    private void retriveSavedImage() {
-        String photo = PreferenceManager.getDefaultSharedPreferences(this).getString("FOTO_CHOPP", "");
-
-        if (!photo.equals("")) {
-            byte[] b = Base64.decode(photo, Base64.DEFAULT);
-            InputStream is = new ByteArrayInputStream(b);
-            Bitmap bitmap = BitmapFactory.decodeStream(is);
-            setContentView(R.layout.activity_cerveja);
-            ImageView imagem = (ImageView) findViewById(R.id.imageView3);
-            imagem.setImageBitmap(bitmap);
-        }
-    }
-
-
-
-
-    void findBT()
-    {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        String readerName = "CHOPEIRA-0"+chopeiraId;
-        //String readerName = "CHOPEIRA-01";
-
-        Log.d("reader", readerName);
-
-        if(mBluetoothAdapter == null)
-        {
-            //myLabel.setText("No bluetooth adapter available");
-        }
-
-        if(!mBluetoothAdapter.isEnabled())
-        {
-            Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBluetooth, 0);
-        }
-
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if(pairedDevices.size() > 0)
-        {
-            for(BluetoothDevice device : pairedDevices)
-            {
-                if(device.getName().contains(readerName))
-                {
-                    mmDevice = device;
-                    break;
-                }
-            }
-        }
-    }
-
-    void openBT() throws IOException
-    {
-        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //Standard SerialPortService ID
-        mmSocket = mmDevice.createRfcommSocketToServiceRecord(uuid);
-        mmSocket.connect();
-        mmOutputStream = mmSocket.getOutputStream();
-        mmInputStream = mmSocket.getInputStream();
-
-        beginListenForData();
-
-    }
-
-    void beginListenForData()
-    {
-        final Handler handler = new Handler();
-        final byte delimiter = 10; //This is the ASCII code for a newline character
-
-        stopWorker = false;
-        readBufferPosition = 0;
-        readBuffer = new byte[1024];
-        workerThread = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                while(!Thread.currentThread().isInterrupted() && !stopWorker)
-                {
-                    try
-                    {
-                        int bytesAvailable = mmInputStream.available();
-                        if(bytesAvailable > 0)
-                        {
-                            byte[] packetBytes = new byte[bytesAvailable];
-                            mmInputStream.read(packetBytes);
-                            for(int i=0;i<bytesAvailable;i++)
-                            {
-                                byte b = packetBytes[i];
-                                if(b == delimiter)
-                                {
-                                    byte[] encodedBytes = new byte[readBufferPosition];
-                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
-                                    entrada = new String(encodedBytes, "US-ASCII");
-                                    readBufferPosition = 0;
-
-                                    handler.post(new Runnable()
-                                    {
-                                        public void run()
-                                        {
-                                            Log.d("leituracartao", entrada);
-                                            //StringBuffer sb = new StringBuffer(entrada);
-                                            //sb.reverse();
-                                            if(entrada.length() >= 8){
-                                                try {
-                                                    preparesCLP(entrada);
-                                                    entrada = "";
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }
-                                    });
-                                }
-                                else
-                                {
-                                    readBuffer[readBufferPosition++] = b;
-                                }
-                            }
-                        }
-                    }
-                    catch (IOException ex)
-                    {
-                        stopWorker = true;
-                    }
-                }
-            }
-        });
-
-        workerThread.start();
-    }
-
-
-    void closeBT() throws IOException
-    {
-        stopWorker = true;
-        mmOutputStream.close();
-        mmInputStream.close();
-        mmSocket.close();
-    }
-
-    //------------- CLP -----------//
-
-
-    public void preparesCLP(String idCartao) throws JSONException { //executa ao clicar no botão (passar cartão)
-
-
-        Log.d("preparesCLP", "recebeu id do cartao" + idCartao);
-        getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
-
-        if(cliente.isValid()){
-            Log.d("1", "primeira mensagem");
-            linha1.setText("Olá "+cliente.getNome()+". Seu saldo é de R$"+cliente.getSaldo());
-        }
-
-
-        finaliza = false;
-
-
-
-        if (clpManager.open(chopeiraId)) { //inicializa os registradores necessários
-            setMaxVolume();
-            monitoraBatelada(); //monitora as informações da batelada
-            this.atualizaInfoPedido(); //atualiza as informações na tela do aplicativo
-        } else {
-            Log.d("2", "segunda mensagem");
-            linha1.setText("Passe o cartão");
-            linha2.setText("se beber não dirija");
-            entrada = "";
-        }
-
-    }
-
-
-    public void atualizaInfoPedido() { //pega informações registradas no clp manager e atualiza as a tela
-        final Handler mHandler = new Handler();
-
-        new Thread(new Runnable() {
             @Override
-            public void run() {
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(CervejaActivity.this, "Por favor aguarde...", null, true, false);
+            }
 
-                while (!finaliza) {
-                    sleep(70);
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            volume_aux = volume;
-                            volume = clpManager.getVolume(); //pega o volume registrado em tempo real
-                            finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
+            @Override
+            protected String doInBackground(String... params) {
 
-                            if (volume != volume_aux) { //Verifica se houve alteração no volume
-                                linha2.setText("Serviu "+volume+"ml, valor R$ "+ getValorStr());
-                                Log.d("3", "terceira mensagem");
+                String uri = params[0];
 
-                            }
+                BufferedReader bufferedReader = null;
+                try {
+                    URL url = new URL(uri);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    StringBuilder sb = new StringBuilder();
 
-                        }
-                    });
+                    bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    String json;
+
+                    while ((json = bufferedReader.readLine()) != null) {
+                        sb.append(json + "\n");
+                    }
+
+                    sb.append("");
+                    String s = sb.toString().trim();
+
+                    JSONObject jsonObj = new JSONObject(s);
+                    JSONArray jsonArray = jsonObj.getJSONArray("cliente");
+
+                    int y = jsonArray.length();
+                    int achou = 0;
+
+                    for (int i = 0; i < y; i++) {
+                        JSONObject jsonClienteObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
+
+
+                        cliente = new cliente();
+                        cliente.setCartao(jsonClienteObject.getString("cartao"));
+                        cliente.setCpf(jsonClienteObject.getString("cpf"));
+                        cliente.setId(Integer.parseInt(jsonClienteObject.getString("id")));
+                        cliente.setNome(jsonClienteObject.getString("nome"));
+                        cliente.setSaldo(Float.parseFloat(jsonClienteObject.getString("saldo")));
+                        cliente.setValid(true);
+
+                        clientes.add(cliente);
+                    }
+
+
+                    return s;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
                 }
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        saldo_aux = cliente.getSaldo();
-                        custo = (ceva.getValor()/100)*volume;
-                        saldo_aux = saldo_aux - custo;
-
-
-                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custo);
-                        linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
-                        Log.d("5", "quinta mensagem");
-                        Log.d("valores", String.valueOf(custo) +","+ String.valueOf(saldo_aux)+","+ String.valueOf(volume));
-                    }
-                });
-
-                entrada = "";
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            if(saldo_aux > 1) {
-                                atualizaClienteDrupal(); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        linha1.setText("Passe o cartao");
-                        linha2.setText("Se beber, não dirija!");
-                        Log.d("4", "quarta mensagem");
-
-                    }
-                });
-
             }
-        }).start();
 
-    }
-
-    public String getValorStr() { //calcula o valor atual de acordo com o volume
-        double valorDbl = (this.valorCeva / 100) * volume;
-        String resultado = String.format("%.2f", valorDbl);
-        return resultado;
-    }
-
-
-    public void monitoraBatelada() { //abre uma nova thread para escutar os registradores do clp
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                clpManager.monitorsCLP();
+            @Override
+            protected void onPostExecute(String s) {
+                // monitoraCartao2();
+                loading.dismiss();
             }
-        });
-        t.start();
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute(url);
     }
 
 
-
-    private void setMaxVolume(){
-        float max = (cliente.getSaldo()/(ceva.getValor())*100);
-        clpManager.setMaxVol((int) max);
-        Log.d("max vol", String.valueOf(max));
-    }
-
-
-
-    public void atualizaClienteDrupal() throws JSONException { //pega informações registradas no clp manager e atualiza as a tela
-
-
-        JSONObject jobj;
-        jobj = new JSONObject();
-
-        jobj.put("id_cliente", cliente.getId()); //id_item_automatize
-
-        jobj.put("novo_saldo", saldo_aux);
-        String data = jobj.toString();
-
-        String url = "http://divinapolenta.cloud.fluidobjects.com/atualiza_saldo";
-        ExportJSON.sendJSON(url, data);
-
-    }
-
-
-
-
-
-    /*public void simulaCartao(View view){
+    public void simulaCartao(View view){
         try {
-            preparesCLP("80EF00AA");
+            preparesCLP("6014FCA9");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }

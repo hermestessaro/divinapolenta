@@ -80,7 +80,7 @@
             android:id="@+id/alterar_tablet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txtAbastecer"
+            android:layout_below="@+id/txtFator"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="35dp"
             android:gravity="center"
@@ -125,7 +125,7 @@
             android:textSize="28sp" />
 
         <TextView
-            android:id="@+id/txtAbastecer"
+            android:id="@+id/txtFator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -133,18 +133,18 @@
             android:layout_below="@+id/txtVolumeBarril"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="35dp"
-            android:text="Alterar volume do barril para "
+            android:text="Alterar fator de pulso para:"
             android:textColor="@android:color/black"
             android:textSize="30sp" />
 
         <EditText
-            android:id="@+id/edtVolumeAbastecido"
+            android:id="@+id/edtFatorPulso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/txtAbastecer"
-            android:layout_alignBottom="@+id/txtAbastecer"
-            android:layout_toEndOf="@+id/txtAbastecer"
-            android:layout_toRightOf="@+id/txtAbastecer"
+            android:layout_alignBaseline="@+id/txtFator"
+            android:layout_alignBottom="@+id/txtFator"
+            android:layout_toEndOf="@+id/txtFator"
+            android:layout_toRightOf="@+id/txtFator"
             android:ems="2"
             android:inputType="number"
             android:maxLength="3"
@@ -152,24 +152,10 @@
             android:textSize="25sp" />
 
         <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/edtVolumeAbastecido"
-            android:layout_alignBottom="@+id/edtVolumeAbastecido"
-            android:layout_toEndOf="@+id/edtVolumeAbastecido"
-            android:layout_toRightOf="@+id/edtVolumeAbastecido"
-            android:text="Litros"
-            android:textColor="@android:color/black"
-            android:textSize="30sp" />
-
-        <TextView
             android:id="@+id/aviso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/textView4"
             android:layout_alignLeft="@+id/btnSalvar"
-            android:layout_alignRight="@+id/textView4"
             android:layout_alignStart="@+id/btnSalvar"
             android:layout_below="@+id/alterar_tablet"
             android:layout_marginTop="22dp"
