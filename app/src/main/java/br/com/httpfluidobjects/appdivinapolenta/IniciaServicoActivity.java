@@ -36,6 +36,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
     String entrada;
     ArrayList<operador> dadosOperadores;
     String readerBT;
+    BluetoothManager bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
         entrada="";
         GetOperadores operadores = new GetOperadores();
         dadosOperadores = operadores.getDados();
-
+        bm = (BluetoothManager)this.getApplication();
 
         //master = new MasterTest("192.168.1.15", 502);
 
@@ -85,27 +86,33 @@ public class IniciaServicoActivity extends AppCompatActivity {
         Button telaOp = (Button) findViewById(R.id.btnEntrarOp);
         Button telaMonitora = (Button) findViewById(R.id.btnEntrarMonitora);
 
+
         Intent intent = getIntent();
         int operou = intent.getIntExtra("operou", 0);
         Log.d("operou", String.valueOf(operou));
-        if(operou == 0) {
+        if (operou == 0) {
             telaPrincipal.setVisibility(View.INVISIBLE);
             telaOp.setVisibility(View.INVISIBLE);
+            telaMonitora.setVisibility(View.INVISIBLE);
+            boolean first_time = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_time", true);
             int fator = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("FATOR", "0"));
-            if(fator == 0){
-                new AlertDialog.Builder(this)
-                        .setTitle("Nenhuma chopeira selecionada!")
-                        .setMessage("Por favor, peça ao operador que selecione uma chopeira.")
-                        .setNeutralButton("ok",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent intent = new Intent(IniciaServicoActivity.this, OperadorActivity.class);
-                                        startActivity(intent);
-                                    }
-                                }).show();
+            if (!first_time) {
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false);
+                if (fator == 0) {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Fator de pulso não configurado")
+                            .setMessage("Por favor, peça ao operador que configure a chopeira.")
+                            .setNeutralButton("ok",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Intent intent = new Intent(IniciaServicoActivity.this, OperadorActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                }
+
             }
-            //telaMonitora.setVisibility(View.INVISIBLE);
         }
         else{
             beginListenForData();
@@ -115,20 +122,20 @@ public class IniciaServicoActivity extends AppCompatActivity {
 
     void findBT()
     {
-        ((BluetoothManager) this.getApplication()).setmBluetoothAdapter(BluetoothAdapter.getDefaultAdapter());
+        bm.setmBluetoothAdapter(BluetoothAdapter.getDefaultAdapter());
 
-        if(((BluetoothManager) this.getApplication()).getmBluetoothAdapter() == null)
+        if(bm.getmBluetoothAdapter() == null)
         {
             //myLabel.setText("No bluetooth adapter available");
         }
 
-        if(!((BluetoothManager) this.getApplication()).getmBluetoothAdapter() .isEnabled())
+        if(!bm.getmBluetoothAdapter().isEnabled())
         {
             Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBluetooth, 0);
         }
 
-        Set<BluetoothDevice> pairedDevices = ((BluetoothManager) this.getApplication()).getmBluetoothAdapter().getBondedDevices();
+        Set<BluetoothDevice> pairedDevices = bm.getmBluetoothAdapter().getBondedDevices();
         if(pairedDevices.size() > 0)
         {
             for(BluetoothDevice device : pairedDevices)
@@ -161,10 +168,10 @@ public class IniciaServicoActivity extends AppCompatActivity {
     void openBT() throws IOException
     {
         UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //Standard SerialPortService ID
-        ((BluetoothManager) this.getApplication()).setMmSocket(((BluetoothManager) this.getApplication()).getMmDevice().createRfcommSocketToServiceRecord(uuid));
-        ((BluetoothManager) this.getApplication()).getMmSocket().connect();
-        ((BluetoothManager) this.getApplication()).setMmOutputStream(((BluetoothManager) this.getApplication()).getMmSocket().getOutputStream());
-        ((BluetoothManager) this.getApplication()).setMmInputStream(((BluetoothManager) this.getApplication()).getMmSocket().getInputStream());
+        bm.setMmSocket(bm.getMmDevice().createRfcommSocketToServiceRecord(uuid));
+        bm.getMmSocket().connect();
+        bm.setMmOutputStream(bm.getMmSocket().getOutputStream());
+        bm.setMmInputStream(bm.getMmSocket().getInputStream());
 
     }
 
@@ -172,7 +179,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
     {
         final Handler handler = new Handler();
         final byte delimiter = 10; //This is the ASCII code for a newline character
-        final InputStream mmInputStream = ((BluetoothManager) this.getApplication()).getMmInputStream();
+        final InputStream mmInputStream = bm.getMmInputStream();
         stopWorker = false;
         readBufferPosition = 0;
         readBuffer = new byte[1024];
@@ -204,13 +211,13 @@ public class IniciaServicoActivity extends AppCompatActivity {
                                         public void run()
                                         {
                                             int i = 0;
-                                            /*for(i=0; i<dadosOperadores.size(); i++) {
+                                            for(i=0; i<dadosOperadores.size(); i++) {
                                                 if (data.contains(dadosOperadores.get(i).getCartao())) {//se cartao de operador dispara a ativity operador
                                                     Log.d("TAD3", data.toString());
                                                     showButtons();
                                                     break;
                                                 }
-                                            }*/
+                                            }
 
                                             //isso é pra debug
                                             if(!data.isEmpty()){
@@ -247,10 +254,10 @@ public class IniciaServicoActivity extends AppCompatActivity {
     }
 
 
-    @Override
+    /*@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) { //ao passar o cartão lê cada caractere como uma tecla, chamando a função 8 vezes
 
-        /*char pressedKey = (char) event.getUnicodeChar();
+        char pressedKey = (char) event.getUnicodeChar();
         entrada += Character.toString(pressedKey);//armazena cada caractere na variável entrada
         Log.d("TAD", entrada);
         showButtons();
@@ -267,10 +274,10 @@ public class IniciaServicoActivity extends AppCompatActivity {
 
             }
             entrada="";
-        }*/
+        }
         showButtons();
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
     public void btnEntraOp(View view) {
         Intent intent = new Intent(IniciaServicoActivity.this, OperadorActivity.class);
@@ -283,7 +290,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
         //startActivity(intent);
     }
     public void btnEntra(View view) throws IOException {
-        //closeBT();
+        closeBT();
         Intent intent = new Intent(IniciaServicoActivity.this, CervejaActivity.class);
         startActivity(intent);
     }

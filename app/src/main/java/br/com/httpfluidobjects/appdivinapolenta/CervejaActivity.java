@@ -63,11 +63,11 @@ public class CervejaActivity extends AppCompatActivity {
     double valorCeva;
     boolean finaliza;
     String entrada;
-    /*BluetoothAdapter mBluetoothAdapter;
+    BluetoothAdapter mBluetoothAdapter;
     BluetoothDevice mmDevice;
     BluetoothSocket mmSocket;
     OutputStream mmOutputStream;
-    InputStream mmInputStream;*/
+    InputStream mmInputStream;
     Thread workerThread;
     byte[] readBuffer;
     int readBufferPosition;
@@ -78,6 +78,7 @@ public class CervejaActivity extends AppCompatActivity {
     float custo;
     CLPManager clpManager;
     ArrayList<cliente> clientes = new ArrayList<cliente>();
+    BluetoothManager bm;
 
 
 
@@ -98,7 +99,7 @@ public class CervejaActivity extends AppCompatActivity {
         chopeiraNid = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("NID_CHOPEIRA", "0"));
         fator = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("FATOR", "0"));
         Log.d("ADM", String.valueOf(chopeiraId));
-
+        bm = (BluetoothManager) this.getApplication();
         //TODO: verificar se ha conexao com a internet
 
         if(cevaId != 0 && chopeiraId != 0) {
@@ -106,10 +107,11 @@ public class CervejaActivity extends AppCompatActivity {
             getJSONCervejasSincrono("http://divinapolenta.cloud.fluidobjects.com/get_cervejas");
             showBeer();
             getJSONTodosClientesAssincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes");
-            //findBT();
 
-            /*try {
-                //openBT();
+            findBT();
+
+            try {
+                openBT();
             } catch (IOException e) {
                 //Toast.makeText(this, "Erro bluetooth; o leitor correto esta pareado?", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
@@ -118,7 +120,8 @@ public class CervejaActivity extends AppCompatActivity {
                 y.printStackTrace();
                 Intent intent = new Intent(CervejaActivity.this, OperadorActivity.class);
                 startActivity(intent);
-            }*/
+            }
+
 
             beginListenForData();
 
@@ -224,22 +227,16 @@ public class CervejaActivity extends AppCompatActivity {
 
 
 
-    /*void findBT()
+    void findBT()
     {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        String readerName = "CHOPEIRA-0"+chopeiraId;
-        //String readerName = "CHOPEIRA-01";
-
-        Log.d("reader", readerName);
-
-        if(mBluetoothAdapter == null)
-        {
+        if (mBluetoothAdapter == null) {
             //myLabel.setText("No bluetooth adapter available");
         }
 
-        if(!mBluetoothAdapter.isEnabled())
-        {
-            Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBluetooth = new Intent(
+                    BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBluetooth, 0);
         }
 
@@ -248,22 +245,30 @@ public class CervejaActivity extends AppCompatActivity {
         {
             for(BluetoothDevice device : pairedDevices)
             {
-                if(device.getName().contains(readerName))
-                {
+                if(device.getName().contains("CHOPEIRA-01")){
                     mmDevice = device;
                     break;
                 }
+                if(device.getName().contains("CHOPEIRA-02")){
+                    mmDevice = device;
+                    break;
+                }
+                if(device.getName().contains("CHOPEIRA-03")){
+                    mmDevice = device;
+                    break;
+                }
+
             }
         }
-    }*/
+    }
 
     void openBT() throws IOException
     {
         UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); //Standard SerialPortService ID
-        ((BluetoothManager) this.getApplication()).setMmSocket(((BluetoothManager) this.getApplication()).getMmDevice().createRfcommSocketToServiceRecord(uuid));
-        ((BluetoothManager) this.getApplication()).getMmSocket().connect();
-        ((BluetoothManager) this.getApplication()).setMmOutputStream(((BluetoothManager) this.getApplication()).getMmSocket().getOutputStream());
-        ((BluetoothManager) this.getApplication()).setMmInputStream(((BluetoothManager) this.getApplication()).getMmSocket().getInputStream());
+        mmSocket = mmDevice.createRfcommSocketToServiceRecord(uuid);
+        mmSocket.connect();
+        mmOutputStream = mmSocket.getOutputStream();
+        mmInputStream = mmSocket.getInputStream();
 
 
     }
@@ -271,8 +276,8 @@ public class CervejaActivity extends AppCompatActivity {
     void beginListenForData()
     {
         final Handler handler = new Handler();
-        final byte delimiter = 10; //This is the ASCII code for a newline character
-        final InputStream mmInputStream = ((BluetoothManager) this.getApplication()).getMmInputStream();
+        final byte new_line = 10; //This is the ASCII code for a newline character
+        final byte carriage_return = 13;
         stopWorker = false;
         readBufferPosition = 0;
         readBuffer = new byte[1024];
@@ -292,7 +297,7 @@ public class CervejaActivity extends AppCompatActivity {
                             for(int i=0;i<bytesAvailable;i++)
                             {
                                 byte b = packetBytes[i];
-                                if(b == delimiter)
+                                if(b == new_line)
                                 {
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
@@ -346,15 +351,49 @@ public class CervejaActivity extends AppCompatActivity {
         //getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
         for(int i = 0; i<clientes.size();i++) {
-            if (clientes.get(i).isValid() && clientes.get(i).getCartao().equals(idCartao)) {
+            if (clientes.get(i).isValid() && idCartao.contains(clientes.get(i).getCartao())) {
                 cliente = clientes.get(i);
                 break;
 
             }
+            cliente = null;
         }
         if(cliente == null) {
-            linha1 = (TextView) findViewById(R.id.linha1);
-            linha1.setText("Cliente não cadastrado");
+            linha2 = (TextView) findViewById(R.id.linha2);
+            linha2.setText("Aguarde enquanto seu cadastro é verificado");
+            getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
+            if(!cliente.isValid){
+                linha1 = (TextView) findViewById(R.id.linha1);
+                linha1.setText("Cliente não cadastrado");
+                linha2.setText("");
+                sleep(3000);
+            }
+            else
+            {
+                linha1 = (TextView) findViewById(R.id.linha1);
+                linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + cliente.getSaldo());
+                linha2 = (TextView) findViewById(R.id.linha2);
+                linha2.setText("Pode se servir");
+                sleep(2000);
+                if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
+                    Log.d("clp", "abriu");
+                    setMaxVolume();
+                    Log.d("volumemax", "setou");
+                    monitoraBatelada(); //monitora as informações da batelada
+
+                } else {
+                    Log.d("2", "segunda mensagem");
+                    linha1 = (TextView) findViewById(R.id.linha1);
+                    linha1.setText("Aproxime o cartão");
+                    linha2 = (TextView) findViewById(R.id.linha2);
+                    linha2.setText("se beber não dirija");
+                    entrada = "";
+                }
+
+                linha1.setText("Aproxime o cartão");
+                linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
+            }
+
         }
         else {
 
@@ -363,6 +402,7 @@ public class CervejaActivity extends AppCompatActivity {
             linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + cliente.getSaldo());
             linha2 = (TextView) findViewById(R.id.linha2);
             linha2.setText("Pode se servir");
+            sleep(2000);
             if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
                 Log.d("clp", "abriu");
                 setMaxVolume();
@@ -377,6 +417,9 @@ public class CervejaActivity extends AppCompatActivity {
                 linha2.setText("se beber não dirija");
                 entrada = "";
             }
+
+            linha1.setText("Aproxime o cartão");
+            linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
         }
 
 
@@ -418,18 +461,26 @@ public class CervejaActivity extends AppCompatActivity {
                     public void run() {
                         saldo_aux = cliente.getSaldo();
                         custo = (ceva.getValor()/100)*volume;
-                        saldo_aux = saldo_aux - custo;
+                        double roundOff = Math.round(custo * 100.0) / 100.0;
+                        saldo_aux = (float) (saldo_aux - roundOff);
 
                         linha1 =(TextView) findViewById(R.id.linha1);
-                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custo);
+                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ roundOff);
                         linha2 =(TextView) findViewById(R.id.linha2);
                         linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
+                        cliente.setSaldo(saldo_aux);
+                        for(int i = 0;i<clientes.size();i++){
+                            if(clientes.get(i).getCpf().equals(cliente.getCpf())){
+                                clientes.get(i).setSaldo(saldo_aux);
+                                break;
+                            }
+                        }
                         Log.d("5", "quinta mensagem");
                         Log.d("valores", String.valueOf(custo) +","+ String.valueOf(saldo_aux)+","+ String.valueOf(volume));
 
                     }
                 });
-                sleep(3000);
+                sleep(5000);
                 entrada = "";
                 mHandler.post(new Runnable() {
                     @Override
@@ -700,7 +751,9 @@ public class CervejaActivity extends AppCompatActivity {
                             cliente.setCpf(jsonClienteObject.getString("cpf"));
                             cliente.setId(Integer.parseInt(jsonClienteObject.getString("id")));
                             cliente.setNome(jsonClienteObject.getString("nome"));
+                            cliente.setSaldo(Float.parseFloat(jsonClienteObject.getString("saldo")));
                             cliente.setValid(true);
+                            clientes.add(cliente);
                             achou = 1;
                         }
 
@@ -897,11 +950,11 @@ public class CervejaActivity extends AppCompatActivity {
     }
 
 
-    public void simulaCartao(View view){
+    /*public void simulaCartao(View view){
         try {
             preparesCLP("6014FCA9");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

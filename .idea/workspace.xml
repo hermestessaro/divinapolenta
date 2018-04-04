@@ -19,25 +19,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="38c9d61a-7cd4-4d27-a836-888e513406d7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/BluetoothManager.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/atualizaTela.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/cerveja01.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/cerveja01.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/MasterTest.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/MasterTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/OperadorActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/OperadorActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="kampeki-app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -72,47 +59,40 @@
       <file leaf-file-name="CervejaActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1175">
-              <caret line="343" column="25" lean-forward="false" selection-start-line="343" selection-start-column="25" selection-end-line="343" selection-end-column="25" />
+            <state relative-caret-position="770">
+              <caret line="393" column="83" lean-forward="false" selection-start-line="393" selection-start-column="83" selection-end-line="393" selection-end-column="83" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2197#2206#0" expanded="true" />
-                <element signature="e#4391#4799#0" expanded="true" />
-                <element signature="e#4798#4799#0" expanded="true" />
                 <element signature="method#getBitmapFromURL#0;class#CervejaActivity#0" expanded="false" />
                 <element signature="method#saveLogo#0;class#CervejaActivity#0" expanded="false" />
                 <element signature="method#retriveSavedImage#0;class#CervejaActivity#0" expanded="false" />
-                <element signature="method#openBT#0;class#CervejaActivity#0" expanded="false" />
-                <element signature="e#9891#12441#0" expanded="true" />
-                <element signature="e#11006#11976#0" expanded="true" />
-                <element signature="e#11975#11976#0" expanded="true" />
-                <element signature="e#12440#12441#0" expanded="true" />
-                <element signature="e#14531#17241#0" expanded="true" />
-                <element signature="e#14704#15499#0" expanded="true" />
-                <element signature="e#15498#15499#0" expanded="true" />
-                <element signature="e#15550#16391#0" expanded="true" />
-                <element signature="e#16390#16391#0" expanded="true" />
-                <element signature="e#16483#17214#0" expanded="true" />
-                <element signature="e#17213#17214#0" expanded="true" />
-                <element signature="e#17240#17241#0" expanded="true" />
-                <element signature="e#17621#17735#0" expanded="true" />
-                <element signature="e#17734#17735#0" expanded="true" />
                 <element signature="method#getJSONCervejas#0;class#CervejaActivity#0" expanded="false" />
-                <element signature="method#doInBackground#0;class#18719:22317" expanded="false" />
+                <element signature="method#doInBackground#0;class#20721:24319" expanded="false" />
                 <element signature="method#getJSONCervejasSincrono#0;class#CervejaActivity#0" expanded="false" />
-                <element signature="method#getJSONClientes#0;class#CervejaActivity#0" expanded="false" />
-                <element signature="method#getJSONClientesSincrono#0;class#CervejaActivity#0" expanded="false" />
                 <element signature="method#getJSONTodosClientesSincrono#0;class#CervejaActivity#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="activity_cerveja.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="2115">
+              <caret line="141" column="42" lean-forward="false" selection-start-line="141" selection-start-column="42" selection-end-line="141" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="android-designer2">
+            <state />
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="CLPManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="107" column="15" lean-forward="false" selection-start-line="107" selection-start-column="15" selection-end-line="107" selection-end-column="15" />
+            <state relative-caret-position="1350">
+              <caret line="101" column="0" lean-forward="false" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -131,12 +111,26 @@
       <file leaf-file-name="IniciaServicoActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-24">
-              <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+            <state relative-caret-position="4035">
+              <caret line="292" column="8" lean-forward="false" selection-start-line="292" selection-start-column="8" selection-end-line="292" selection-end-column="8" />
               <folding>
-                <marker date="1522707502000" expanded="true" signature="2638:3686" ph="//..." />
+                <element signature="imports" expanded="false" />
+                <marker date="1522792165000" expanded="true" signature="2718:4074" ph="//..." />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_operador.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2235">
+              <caret line="149" column="32" lean-forward="false" selection-start-line="149" selection-start-column="32" selection-end-line="149" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2">
+            <state />
           </provider>
         </entry>
       </file>
@@ -147,37 +141,8 @@
               <caret line="18" column="36" lean-forward="false" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#625#626#0" expanded="true" />
-                <element signature="e#665#666#0" expanded="true" />
-                <element signature="e#843#844#0" expanded="true" />
-                <element signature="e#874#875#0" expanded="true" />
-                <element signature="e#931#932#0" expanded="true" />
-                <element signature="e#971#972#0" expanded="true" />
-                <element signature="e#1015#1016#0" expanded="true" />
-                <element signature="e#1046#1047#0" expanded="true" />
-                <element signature="e#1103#1104#0" expanded="true" />
-                <element signature="e#1143#1144#0" expanded="true" />
-                <element signature="e#1190#1191#0" expanded="true" />
-                <element signature="e#1227#1228#0" expanded="true" />
-                <element signature="e#1390#1391#0" expanded="true" />
-                <element signature="e#1426#1427#0" expanded="true" />
-                <element signature="e#1489#1490#0" expanded="true" />
-                <element signature="e#1539#1540#0" expanded="true" />
               </folding>
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_operador.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2370">
-              <caret line="158" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer2">
-            <state />
           </provider>
         </entry>
       </file>
@@ -206,14 +171,14 @@
       </file>
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider editor-type-id="android-manifest">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
               <caret line="16" column="40" lean-forward="false" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
               <folding />
             </state>
-          </provider>
-          <provider editor-type-id="android-manifest">
-            <state />
           </provider>
         </entry>
       </file>
@@ -229,9 +194,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>\</find>
-      <find>prime</find>
-      <find>primeir</find>
       <find>primeira</find>
       <find>primeirate</find>
       <find>mult_factor_reg</find>
@@ -243,7 +205,6 @@
       <find>FAC</find>
       <find>FACT</find>
       <find>startActivity</find>
-      <find>close</find>
       <find>get</find>
       <find>getS</find>
       <find>getSh</find>
@@ -259,6 +220,10 @@
       <find>volume</find>
       <find>maxvol</find>
       <find>finaliza</find>
+      <find>REG</find>
+      <find>delimiter</find>
+      <find>close</find>
+      <find>new cliente</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app</dir>
@@ -2010,15 +1975,15 @@
         <option value="$PROJECT_DIR$/app/src/main/java/atualizaTela.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/cerveja.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/MasterTest.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/BluetoothManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/OperadorActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java" />
       </list>
     </option>
@@ -2046,6 +2011,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2060,17 +2029,13 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="settings.editor.selected.configurable" value="tasks" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="device.picker.selection" value="3100a6b016114400" />
+    <property name="device.picker.selection" value="310033c39b4e8400" />
     <property name="sync.plugin.last.upgrade.timestamp" value="1519324737073" />
     <property name="show.do.not.ask.upgrade.gradle.plugin" value="2.2.1" />
     <property name="android.profiler.active" value="true" />
@@ -2170,7 +2135,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522710141453" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522810495948" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2218,7 +2183,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522710141453" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522810495948" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2380,7 +2345,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522710141455" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522810495949" />
       </method>
     </configuration>
     <list size="1">
@@ -2470,20 +2435,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="978" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15893272" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3259861" sideWeight="0.48935038" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2552204" sideWeight="0.40468583" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1774942" sideWeight="0.37646434" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2552204" sideWeight="0.59531415" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946634" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2552204" sideWeight="0.59531415" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26914153" sideWeight="0.6395101" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31786543" sideWeight="0.6315229" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -2493,8 +2457,8 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30974478" sideWeight="0.6235357" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.56148493" sideWeight="0.6341853" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2516,28 +2480,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java</url>
-          <line>196</line>
-          <properties />
-          <option name="timeStamp" value="286" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java</url>
-          <line>205</line>
-          <properties />
-          <option name="timeStamp" value="290" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java</url>
           <line>88</line>
           <properties />
           <option name="timeStamp" value="300" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java</url>
-          <line>365</line>
-          <properties />
-          <option name="timeStamp" value="308" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java</url>
@@ -2545,14 +2491,28 @@
           <properties />
           <option name="timeStamp" value="309" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java</url>
+          <line>63</line>
+          <properties />
+          <option name="timeStamp" value="313" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java</url>
+          <line>407</line>
+          <properties />
+          <option name="timeStamp" value="318" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java</url>
+          <line>405</line>
+          <properties />
+          <option name="timeStamp" value="320" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="311" />
+      <option name="time" value="341" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="app">
-        <watch expression="clientes" language="JAVA" />
-      </configuration>
-    </watches-manager>
+    <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_cerveja.xml">
@@ -2646,6 +2606,7 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="555">
           <caret line="37" column="19" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="37" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer2">
@@ -2677,13 +2638,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
           <caret line="5816" column="0" lean-forward="false" selection-start-line="5816" selection-start-column="0" selection-end-line="5816" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../../Android/sdk/sources/android-26/android/os/Handler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="739" column="0" lean-forward="false" selection-start-line="739" selection-start-column="0" selection-end-line="739" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -2827,15 +2781,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="2100">
-          <caret line="152" column="42" lean-forward="false" selection-start-line="152" selection-start-column="42" selection-end-line="152" selection-end-column="42" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/OperadorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1935">
+          <caret line="148" column="10" lean-forward="false" selection-start-line="148" selection-start-column="10" selection-end-line="148" selection-end-column="10" />
           <folding />
         </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/MasterTest.java">
@@ -2852,35 +2803,45 @@
           <caret line="18" column="36" lean-forward="false" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#625#626#0" expanded="true" />
-            <element signature="e#665#666#0" expanded="true" />
-            <element signature="e#843#844#0" expanded="true" />
-            <element signature="e#874#875#0" expanded="true" />
-            <element signature="e#931#932#0" expanded="true" />
-            <element signature="e#971#972#0" expanded="true" />
-            <element signature="e#1015#1016#0" expanded="true" />
-            <element signature="e#1046#1047#0" expanded="true" />
-            <element signature="e#1103#1104#0" expanded="true" />
-            <element signature="e#1143#1144#0" expanded="true" />
-            <element signature="e#1190#1191#0" expanded="true" />
-            <element signature="e#1227#1228#0" expanded="true" />
-            <element signature="e#1390#1391#0" expanded="true" />
-            <element signature="e#1426#1427#0" expanded="true" />
-            <element signature="e#1489#1490#0" expanded="true" />
-            <element signature="e#1539#1540#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml">
+    <entry file="file://$PROJECT_DIR$/../../../Android/sdk/sources/android-26/android/os/Handler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2370">
-          <caret line="158" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+        <state relative-caret-position="175">
+          <caret line="739" column="0" lean-forward="false" selection-start-line="739" selection-start-column="0" selection-end-line="739" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1350">
+          <caret line="101" column="0" lean-forward="false" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2">
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4035">
+          <caret line="292" column="8" lean-forward="false" selection-start-line="292" selection-start-column="8" selection-end-line="292" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <marker date="1522792165000" expanded="true" signature="2718:4074" ph="//..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="40" lean-forward="false" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml">
@@ -2894,75 +2855,40 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/OperadorActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1935">
-          <caret line="148" column="10" lean-forward="false" selection-start-line="148" selection-start-column="10" selection-end-line="148" selection-end-column="10" />
+        <state relative-caret-position="2235">
+          <caret line="149" column="32" lean-forward="false" selection-start-line="149" selection-start-column="32" selection-end-line="149" selection-end-column="32" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="40" lean-forward="false" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
+      <provider editor-type-id="android-designer2">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-24">
-          <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
-          <folding>
-            <marker date="1522707502000" expanded="true" signature="2638:3686" ph="//..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="107" column="15" lean-forward="false" selection-start-line="107" selection-start-column="15" selection-end-line="107" selection-end-column="15" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="2115">
+          <caret line="141" column="42" lean-forward="false" selection-start-line="141" selection-start-column="42" selection-end-line="141" selection-end-column="42" />
           <folding />
         </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1175">
-          <caret line="343" column="25" lean-forward="false" selection-start-line="343" selection-start-column="25" selection-end-line="343" selection-end-column="25" />
+        <state relative-caret-position="770">
+          <caret line="393" column="83" lean-forward="false" selection-start-line="393" selection-start-column="83" selection-end-line="393" selection-end-column="83" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2197#2206#0" expanded="true" />
-            <element signature="e#4391#4799#0" expanded="true" />
-            <element signature="e#4798#4799#0" expanded="true" />
             <element signature="method#getBitmapFromURL#0;class#CervejaActivity#0" expanded="false" />
             <element signature="method#saveLogo#0;class#CervejaActivity#0" expanded="false" />
             <element signature="method#retriveSavedImage#0;class#CervejaActivity#0" expanded="false" />
-            <element signature="method#openBT#0;class#CervejaActivity#0" expanded="false" />
-            <element signature="e#9891#12441#0" expanded="true" />
-            <element signature="e#11006#11976#0" expanded="true" />
-            <element signature="e#11975#11976#0" expanded="true" />
-            <element signature="e#12440#12441#0" expanded="true" />
-            <element signature="e#14531#17241#0" expanded="true" />
-            <element signature="e#14704#15499#0" expanded="true" />
-            <element signature="e#15498#15499#0" expanded="true" />
-            <element signature="e#15550#16391#0" expanded="true" />
-            <element signature="e#16390#16391#0" expanded="true" />
-            <element signature="e#16483#17214#0" expanded="true" />
-            <element signature="e#17213#17214#0" expanded="true" />
-            <element signature="e#17240#17241#0" expanded="true" />
-            <element signature="e#17621#17735#0" expanded="true" />
-            <element signature="e#17734#17735#0" expanded="true" />
             <element signature="method#getJSONCervejas#0;class#CervejaActivity#0" expanded="false" />
-            <element signature="method#doInBackground#0;class#18719:22317" expanded="false" />
+            <element signature="method#doInBackground#0;class#20721:24319" expanded="false" />
             <element signature="method#getJSONCervejasSincrono#0;class#CervejaActivity#0" expanded="false" />
-            <element signature="method#getJSONClientes#0;class#CervejaActivity#0" expanded="false" />
-            <element signature="method#getJSONClientesSincrono#0;class#CervejaActivity#0" expanded="false" />
             <element signature="method#getJSONTodosClientesSincrono#0;class#CervejaActivity#0" expanded="false" />
           </folding>
         </state>
