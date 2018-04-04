@@ -46,8 +46,8 @@ public class CLPManager {
     private boolean finalizaOp;
 
     public CLPManager() {
-        //master = new MasterTest("192.168.15.7", 502);
-        master = new MasterTest("10.0.1.15", 502);
+        master = new MasterTest("192.168.15.13", 502);
+        //master = new MasterTest("10.0.1.15", 502);
 
         finalizaOp = false;
     }
@@ -59,7 +59,7 @@ public class CLPManager {
 
     //ajusta o endereco dos registradores de acordo com o numero da chopeira
     public void inicializaEndRegistradores(int chopeira) {
-        chopeira = chopeira - 1;
+        //chopeira = chopeira - 1;
         Log.d("chopeira", String.valueOf(chopeira));
         int regInicial = 3000 + (chopeira  * 30);
         //int regInicial = 1;

@@ -20,6 +20,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -80,6 +82,7 @@ public class CervejaActivity extends AppCompatActivity {
     ArrayList<cliente> clientes = new ArrayList<cliente>();
     BluetoothManager bm;
 
+    EditText cartao;
 
 
     @Override
@@ -91,6 +94,9 @@ public class CervejaActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         retriveSavedImage();
+
+        cartao = (EditText) findViewById(R.id.testecartao);
+
 
         //MUDAR O VALOR DEFAULT
         cevaId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CERVEJA", "0"));
@@ -108,7 +114,7 @@ public class CervejaActivity extends AppCompatActivity {
             showBeer();
             getJSONTodosClientesAssincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes");
 
-            findBT();
+            /*findBT();
 
             try {
                 openBT();
@@ -123,7 +129,7 @@ public class CervejaActivity extends AppCompatActivity {
             }
 
 
-            beginListenForData();
+            beginListenForData();*/
 
         }
         else{
@@ -368,12 +374,15 @@ public class CervejaActivity extends AppCompatActivity {
                 linha2.setText("");
                 sleep(3000);
             }
-            else
-            {
+            else {
+                String nome = cliente.getNome();
+                float saldo = cliente.getSaldo();
                 linha1 = (TextView) findViewById(R.id.linha1);
-                linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + cliente.getSaldo());
+                linha1.setText("Olá " + nome + ". Seu saldo é de R$" + saldo);
                 linha2 = (TextView) findViewById(R.id.linha2);
                 linha2.setText("Pode se servir");
+                ViewGroup vg = findViewById (R.id.activity_cerveja);
+                vg.invalidate();
                 sleep(2000);
                 if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
                     Log.d("clp", "abriu");
@@ -389,18 +398,22 @@ public class CervejaActivity extends AppCompatActivity {
                     linha2.setText("se beber não dirija");
                     entrada = "";
                 }
-
-                linha1.setText("Aproxime o cartão");
-                linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
             }
 
         }
         else {
 
             Log.d("1", "primeira mensagem");
+            String nome = cliente.getNome();
+            float saldo = cliente.getSaldo();
             linha1 = (TextView) findViewById(R.id.linha1);
-            linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + cliente.getSaldo());
             linha2 = (TextView) findViewById(R.id.linha2);
+            try{
+                linha1.setText("Olá " + nome + ". Seu saldo é de R$" + saldo);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
             linha2.setText("Pode se servir");
             sleep(2000);
             if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
@@ -414,12 +427,12 @@ public class CervejaActivity extends AppCompatActivity {
                 linha1 = (TextView) findViewById(R.id.linha1);
                 linha1.setText("Aproxime o cartão");
                 linha2 = (TextView) findViewById(R.id.linha2);
-                linha2.setText("se beber não dirija");
+                linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
                 entrada = "";
             }
 
-            linha1.setText("Aproxime o cartão");
-            linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
+            //linha1.setText("Aproxime o cartão");
+            //linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
         }
 
 
@@ -446,7 +459,7 @@ public class CervejaActivity extends AppCompatActivity {
                             volume = clpManager.getVolume(); //pega o volume registrado em tempo real
                             finaliza = clpManager.finalizou(); //verifica o status da batelada - Se 4(finalizado) -> termina o while
 
-                            if (volume != volume_aux) { //Verifica se houve alteração no volume
+                            if ((volume != volume_aux)&&(volume > 0)) { //Verifica se houve alteração no volume
                                 linha2 =(TextView) findViewById(R.id.linha2);
                                 linha2.setText("Serviu "+volume+"ml, valor R$ "+ getValorStr());
                                 Log.d("3", "terceira mensagem");
@@ -461,17 +474,18 @@ public class CervejaActivity extends AppCompatActivity {
                     public void run() {
                         saldo_aux = cliente.getSaldo();
                         custo = (ceva.getValor()/100)*volume;
-                        double roundOff = Math.round(custo * 100.0) / 100.0;
-                        saldo_aux = (float) (saldo_aux - roundOff);
+                        double custoroundOff = Math.round(custo * 100.0) / 100.0;
+                        saldo_aux = (float) (saldo_aux - custoroundOff);
+                        double saldoroundOff = Math.round(saldo_aux * 100.0) / 100.0;
 
                         linha1 =(TextView) findViewById(R.id.linha1);
-                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ roundOff);
+                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custoroundOff);
                         linha2 =(TextView) findViewById(R.id.linha2);
-                        linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
-                        cliente.setSaldo(saldo_aux);
+                        linha2.setText("O saldo do seu cartão agora é de R$"+ saldoroundOff); //atualiza a interface
+                        cliente.setSaldo((float) saldoroundOff);
                         for(int i = 0;i<clientes.size();i++){
                             if(clientes.get(i).getCpf().equals(cliente.getCpf())){
-                                clientes.get(i).setSaldo(saldo_aux);
+                                clientes.get(i).setSaldo((float) saldoroundOff);
                                 break;
                             }
                         }
@@ -950,11 +964,12 @@ public class CervejaActivity extends AppCompatActivity {
     }
 
 
-    /*public void simulaCartao(View view){
+    public void simulaCartao(View view){
         try {
-            preparesCLP("6014FCA9");
+            String numero = cartao.getText().toString();
+            preparesCLP(numero);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }

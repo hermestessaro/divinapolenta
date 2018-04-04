@@ -58,7 +58,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
 
         //master = new MasterTest("192.168.1.15", 502);
 
-       findBT();
+       /*findBT();
         try {
             openBT();
             beginListenForData();
@@ -72,7 +72,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             System.exit(0);
-        }
+        }*/
 
 
 
@@ -91,9 +91,9 @@ public class IniciaServicoActivity extends AppCompatActivity {
         int operou = intent.getIntExtra("operou", 0);
         Log.d("operou", String.valueOf(operou));
         if (operou == 0) {
-            telaPrincipal.setVisibility(View.INVISIBLE);
-            telaOp.setVisibility(View.INVISIBLE);
-            telaMonitora.setVisibility(View.INVISIBLE);
+            //telaPrincipal.setVisibility(View.INVISIBLE);
+            //telaOp.setVisibility(View.INVISIBLE);
+            //telaMonitora.setVisibility(View.INVISIBLE);
             boolean first_time = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_time", true);
             int fator = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getString("FATOR", "0"));
             if (!first_time) {
@@ -115,7 +115,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
             }
         }
         else{
-            beginListenForData();
+            //beginListenForData();
         }
     }
 
@@ -290,7 +290,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
         //startActivity(intent);
     }
     public void btnEntra(View view) throws IOException {
-        closeBT();
+        //closeBT();
         Intent intent = new Intent(IniciaServicoActivity.this, CervejaActivity.class);
         startActivity(intent);
     }
