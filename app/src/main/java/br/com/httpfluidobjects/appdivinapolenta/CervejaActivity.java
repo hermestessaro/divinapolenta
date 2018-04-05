@@ -358,18 +358,20 @@ public class CervejaActivity extends AppCompatActivity {
         Log.d("preparesCLP", "recebeu id do cartao" + idCartao);
         //getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
-        for(int i = 0; i<clientes.size();i++) {
-            if (clientes.get(i).isValid() && idCartao.contains(clientes.get(i).getCartao())) {
-                cliente = clientes.get(i);
-                break;
-
-            }
-            cliente = null;
-        }
+//        for(int i = 0; i<clientes.size();i++) {
+ //           if (clientes.get(i).isValid() && idCartao.contains(clientes.get(i).getCartao())) {
+//                cliente = clientes.get(i);
+//                break;
+//
+  //          }
+//            cliente = null;
+//        }
+        getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
+        Log.d("Cliente: ", cliente.getNome() + " - Cartao: " + idCartao + " - Saldo : " + cliente.getSaldo());
         if(cliente == null) {
             linha2 = (TextView) findViewById(R.id.linha2);
             linha2.setText("Aguarde enquanto seu cadastro é verificado");
-            getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
+            //getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
             if(!cliente.isValid){
                 linha1 = (TextView) findViewById(R.id.linha1);
                 linha1.setText("Cliente não cadastrado");
@@ -379,7 +381,7 @@ public class CervejaActivity extends AppCompatActivity {
             else
             {
                 linha1 = (TextView) findViewById(R.id.linha1);
-                linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + cliente.getSaldo());
+                linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + String.format("%.2f", cliente.getSaldo()));
                 linha2 = (TextView) findViewById(R.id.linha2);
                 linha2.setText("Pode se servir");
                 sleep(2000);
@@ -407,7 +409,7 @@ public class CervejaActivity extends AppCompatActivity {
 
             Log.d("1", "primeira mensagem");
             linha1 = (TextView) findViewById(R.id.linha1);
-            linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + cliente.getSaldo());
+            linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + String.format("%.2f", cliente.getSaldo()));
             linha2 = (TextView) findViewById(R.id.linha2);
             linha2.setText("Pode se servir");
             sleep(2000);
@@ -473,9 +475,9 @@ public class CervejaActivity extends AppCompatActivity {
                         saldo_aux = (saldo_aux - custo);
 
                         linha1 =(TextView) findViewById(R.id.linha1);
-                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custo);
+                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ String.format("%.2f", custo));
                         linha2 =(TextView) findViewById(R.id.linha2);
-                        linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
+                        linha2.setText("O saldo do seu cartão agora é de R$"+ String.format("%.2f", saldo_aux)); //atualiza a interface
                         cliente.setSaldo(saldo_aux);
                         for(int i = 0;i<clientes.size();i++){
                             if(clientes.get(i).getCpf().equals(cliente.getCpf())){
