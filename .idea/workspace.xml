@@ -20,11 +20,16 @@
   <component name="ChangeListManager">
     <list default="true" id="38c9d61a-7cd4-4d27-a836-888e513406d7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml" />
+<<<<<<< Updated upstream
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml" />
+>>>>>>> Stashed changes
     </list>
     <ignored path="kampeki-app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -56,19 +61,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CervejaActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CervejaActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="770">
               <caret line="393" column="83" lean-forward="false" selection-start-line="393" selection-start-column="83" selection-end-line="393" selection-end-column="83" />
+=======
+            <state relative-caret-position="-2547">
+              <caret line="383" column="30" lean-forward="false" selection-start-line="383" selection-start-column="28" selection-end-line="383" selection-end-column="30" />
+>>>>>>> Stashed changes
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getBitmapFromURL#0;class#CervejaActivity#0" expanded="false" />
                 <element signature="method#saveLogo#0;class#CervejaActivity#0" expanded="false" />
                 <element signature="method#retriveSavedImage#0;class#CervejaActivity#0" expanded="false" />
                 <element signature="method#getJSONCervejas#0;class#CervejaActivity#0" expanded="false" />
+<<<<<<< Updated upstream
                 <element signature="method#doInBackground#0;class#20721:24319" expanded="false" />
+=======
+                <element signature="method#doInBackground#0;class#21261:24859" expanded="false" />
+>>>>>>> Stashed changes
                 <element signature="method#getJSONCervejasSincrono#0;class#CervejaActivity#0" expanded="false" />
+                <element signature="method#getJSONClientes#0;class#CervejaActivity#0" expanded="false" />
+                <element signature="method#onPreExecute#0;class#27672:30477" expanded="false" />
+                <element signature="method#getJSONClientesSincrono#0;class#CervejaActivity#0" expanded="false" />
                 <element signature="method#getJSONTodosClientesSincrono#0;class#CervejaActivity#0" expanded="false" />
               </folding>
             </state>
@@ -78,9 +95,17 @@
       <file leaf-file-name="activity_cerveja.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml">
           <provider editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="2115">
               <caret line="141" column="42" lean-forward="false" selection-start-line="141" selection-start-column="42" selection-end-line="141" selection-end-column="42" />
               <folding />
+=======
+            <state relative-caret-position="222">
+              <caret line="124" column="0" lean-forward="false" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
+              <folding>
+                <element signature="e#5865#5883#0" expanded="true" />
+              </folding>
+>>>>>>> Stashed changes
             </state>
           </provider>
           <provider selected="true" editor-type-id="android-designer2">
@@ -91,6 +116,7 @@
       <file leaf-file-name="CLPManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="1350">
               <caret line="101" column="0" lean-forward="false" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
               <folding />
@@ -103,19 +129,30 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1215">
               <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+=======
+            <state relative-caret-position="317">
+              <caret line="61" column="8" lean-forward="false" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
+>>>>>>> Stashed changes
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IniciaServicoActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="IniciaServicoActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="4035">
               <caret line="292" column="8" lean-forward="false" selection-start-line="292" selection-start-column="8" selection-end-line="292" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="false" />
                 <marker date="1522792165000" expanded="true" signature="2718:4074" ph="//..." />
+=======
+            <state relative-caret-position="363">
+              <caret line="117" column="12" lean-forward="false" selection-start-line="117" selection-start-column="12" selection-end-line="117" selection-end-column="12" />
+              <folding>
+                <marker date="1522870690000" expanded="true" signature="2718:4074" ph="//..." />
+>>>>>>> Stashed changes
               </folding>
             </state>
           </provider>
@@ -124,8 +161,13 @@
       <file leaf-file-name="activity_operador.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="2235">
               <caret line="149" column="32" lean-forward="false" selection-start-line="149" selection-start-column="32" selection-end-line="149" selection-end-column="32" />
+=======
+            <state relative-caret-position="2010">
+              <caret line="134" column="30" lean-forward="false" selection-start-line="134" selection-start-column="30" selection-end-line="134" selection-end-column="30" />
+>>>>>>> Stashed changes
               <folding />
             </state>
           </provider>
@@ -134,6 +176,7 @@
           </provider>
         </entry>
       </file>
+<<<<<<< Updated upstream
       <file leaf-file-name="BluetoothManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/BluetoothManager.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -146,6 +189,8 @@
           </provider>
         </entry>
       </file>
+=======
+>>>>>>> Stashed changes
       <file leaf-file-name="activity_inicia_servico.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml">
           <provider editor-type-id="text-editor">
@@ -162,6 +207,7 @@
       <file leaf-file-name="OperadorActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/OperadorActivity.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="1935">
               <caret line="148" column="10" lean-forward="false" selection-start-line="148" selection-start-column="10" selection-end-line="148" selection-end-column="10" />
               <folding />
@@ -177,8 +223,25 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
               <caret line="16" column="40" lean-forward="false" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
+=======
+            <state relative-caret-position="378">
+              <caret line="164" column="56" lean-forward="false" selection-start-line="164" selection-start-column="55" selection-end-line="164" selection-end-column="56" />
+>>>>>>> Stashed changes
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="480">
+              <caret line="32" column="28" lean-forward="false" selection-start-line="32" selection-start-column="28" selection-end-line="32" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-manifest">
+            <state />
           </provider>
         </entry>
       </file>
@@ -194,9 +257,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+<<<<<<< Updated upstream
       <find>primeira</find>
       <find>primeirate</find>
       <find>mult_factor_reg</find>
+=======
+>>>>>>> Stashed changes
       <find>MAX_VOL_REG</find>
       <find>M</find>
       <find>Max</find>
@@ -223,7 +289,12 @@
       <find>REG</find>
       <find>delimiter</find>
       <find>close</find>
+<<<<<<< Updated upstream
       <find>new cliente</find>
+=======
+      <find>serviu</find>
+      <find>vg</find>
+>>>>>>> Stashed changes
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app</dir>
@@ -1976,15 +2047,20 @@
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/cerveja.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/MasterTest.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/BluetoothManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/OperadorActivity.java" />
+<<<<<<< Updated upstream
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java" />
+=======
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml" />
+>>>>>>> Stashed changes
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java" />
       </list>
     </option>
   </component>
@@ -2027,6 +2103,65 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidBuildScriptsGroupNode" />
             </PATH_ELEMENT>
           </PATH>
+<<<<<<< Updated upstream
+=======
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="divinapolenta" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="divinapolenta" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="divinapolenta" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="divinapolenta" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="manifests" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidManifestsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
+>>>>>>> Stashed changes
         </subPane>
       </pane>
     </panes>
@@ -2135,7 +2270,11 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+<<<<<<< Updated upstream
         <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522810495948" />
+=======
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522871463843" />
+>>>>>>> Stashed changes
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2183,7 +2322,11 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+<<<<<<< Updated upstream
         <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522810495948" />
+=======
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522871463843" />
+>>>>>>> Stashed changes
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2345,7 +2488,11 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+<<<<<<< Updated upstream
         <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522810495949" />
+=======
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1522871463844" />
+>>>>>>> Stashed changes
       </method>
     </configuration>
     <list size="1">
@@ -2478,6 +2625,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+<<<<<<< Updated upstream
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java</url>
@@ -2511,6 +2659,9 @@
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="341" />
+=======
+      <option name="time" value="352" />
+>>>>>>> Stashed changes
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2814,15 +2965,34 @@
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
     <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1350">
           <caret line="101" column="0" lean-forward="false" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/../../../Android/sdk/sources/android-26/android/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="4511" column="0" lean-forward="false" selection-start-line="4511" selection-start-column="0" selection-end-line="4511" selection-end-column="0" />
+>>>>>>> Stashed changes
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
     <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java">
+=======
+    <entry file="file://$PROJECT_DIR$/../../../Android/sdk/sources/android-26/android/widget/TextView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="4012" column="0" lean-forward="false" selection-start-line="4012" selection-start-column="0" selection-end-line="4012" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/appcompat-v7/26.1.0/2b34456c30d6b6e5db5fa3e8fa02f6cebd5531fd/appcompat-v7-26.1.0-sources.jar!/android/support/v7/app/AppCompatViewInflater.java">
+>>>>>>> Stashed changes
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4035">
           <caret line="292" column="8" lean-forward="false" selection-start-line="292" selection-start-column="8" selection-end-line="292" selection-end-column="8" />
@@ -2838,12 +3008,18 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state relative-caret-position="240">
           <caret line="16" column="40" lean-forward="false" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
+=======
+        <state relative-caret-position="378">
+          <caret line="164" column="56" lean-forward="false" selection-start-line="164" selection-start-column="55" selection-end-line="164" selection-end-column="56" />
+>>>>>>> Stashed changes
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -2864,13 +3040,54 @@
       </provider>
       <provider editor-type-id="android-designer2">
         <state />
+=======
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_operador.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2010">
+          <caret line="134" column="30" lean-forward="false" selection-start-line="134" selection-start-column="30" selection-end-line="134" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="32" column="28" lean-forward="false" selection-start-line="32" selection-start-column="28" selection-end-line="32" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_inicia_servico.xml">
+      <provider selected="true" editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="55" lean-forward="false" selection-start-line="2" selection-start-column="55" selection-end-line="2" selection-end-column="55" />
+          <folding />
+        </state>
+>>>>>>> Stashed changes
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-large/activity_cerveja.xml">
       <provider editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state relative-caret-position="2115">
           <caret line="141" column="42" lean-forward="false" selection-start-line="141" selection-start-column="42" selection-end-line="141" selection-end-column="42" />
           <folding />
+=======
+        <state relative-caret-position="222">
+          <caret line="124" column="0" lean-forward="false" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
+          <folding>
+            <element signature="e#5865#5883#0" expanded="true" />
+          </folding>
+>>>>>>> Stashed changes
         </state>
       </provider>
       <provider selected="true" editor-type-id="android-designer2">
@@ -2879,17 +3096,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CervejaActivity.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state relative-caret-position="770">
           <caret line="393" column="83" lean-forward="false" selection-start-line="393" selection-start-column="83" selection-end-line="393" selection-end-column="83" />
+=======
+        <state relative-caret-position="-2547">
+          <caret line="383" column="30" lean-forward="false" selection-start-line="383" selection-start-column="28" selection-end-line="383" selection-end-column="30" />
+>>>>>>> Stashed changes
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#getBitmapFromURL#0;class#CervejaActivity#0" expanded="false" />
             <element signature="method#saveLogo#0;class#CervejaActivity#0" expanded="false" />
             <element signature="method#retriveSavedImage#0;class#CervejaActivity#0" expanded="false" />
             <element signature="method#getJSONCervejas#0;class#CervejaActivity#0" expanded="false" />
+<<<<<<< Updated upstream
             <element signature="method#doInBackground#0;class#20721:24319" expanded="false" />
+=======
+            <element signature="method#doInBackground#0;class#21261:24859" expanded="false" />
+>>>>>>> Stashed changes
             <element signature="method#getJSONCervejasSincrono#0;class#CervejaActivity#0" expanded="false" />
+            <element signature="method#getJSONClientes#0;class#CervejaActivity#0" expanded="false" />
+            <element signature="method#onPreExecute#0;class#27672:30477" expanded="false" />
+            <element signature="method#getJSONClientesSincrono#0;class#CervejaActivity#0" expanded="false" />
             <element signature="method#getJSONTodosClientesSincrono#0;class#CervejaActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/CLPManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="61" column="8" lean-forward="false" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/br/com/httpfluidobjects/appdivinapolenta/IniciaServicoActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="117" column="12" lean-forward="false" selection-start-line="117" selection-start-column="12" selection-end-line="117" selection-end-column="12" />
+          <folding>
+            <marker date="1522870690000" expanded="true" signature="2718:4074" ph="//..." />
           </folding>
         </state>
       </provider>

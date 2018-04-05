@@ -81,6 +81,9 @@ public class CervejaActivity extends AppCompatActivity {
     BluetoothManager bm;
 
 
+    //EditText cartao;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,11 @@ public class CervejaActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         retriveSavedImage();
+
+
+        //cartao = (EditText) findViewById(R.id.testecartao);
+
+
 
         //MUDAR O VALOR DEFAULT
         cevaId = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("ID_CERVEJA", "0"));
@@ -418,8 +426,8 @@ public class CervejaActivity extends AppCompatActivity {
                 entrada = "";
             }
 
-            linha1.setText("Aproxime o cartão");
-            linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
+//            linha1.setText("Aproxime o cartão");
+//            linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
         }
 
 
@@ -952,7 +960,9 @@ public class CervejaActivity extends AppCompatActivity {
 
     /*public void simulaCartao(View view){
         try {
-            preparesCLP("6014FCA9");
+
+            //String numero = cartao.getText().toString();
+            preparesCLP("55A1AEC6");
         } catch (JSONException e) {
             e.printStackTrace();
         }

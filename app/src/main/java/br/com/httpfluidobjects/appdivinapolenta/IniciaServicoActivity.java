@@ -285,7 +285,7 @@ public class IniciaServicoActivity extends AppCompatActivity {
     }
 
     public void btnEntraMonitora(View view) {
-        showButtons();
+        //showButtons();
         //Intent intent = new Intent(IniciaServicoActivity.this, MonitoraActivity.class);
         //startActivity(intent);
     }

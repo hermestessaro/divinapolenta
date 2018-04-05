@@ -30,8 +30,6 @@
         <activity
             android:name=".CervejaActivity"
             android:screenOrientation="portrait" >
-
-
         </activity>
         <activity android:name=".OperadorActivity" />
         <activity android:name=".MonitoraActivity"></activity>

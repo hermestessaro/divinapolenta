@@ -112,7 +112,6 @@
         android:width="160dp"
         android:height="55dp"
         android:background="@drawable/rounded_red_border"
-        android:onClick="btnEntraMonitora"
         android:paddingBottom="3dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
