@@ -469,11 +469,11 @@ public class CervejaActivity extends AppCompatActivity {
                     public void run() {
                         saldo_aux = cliente.getSaldo();
                         custo = (ceva.getValor()/100)*volume;
-                        double roundOff = Math.round(custo * 100.0) / 100.0;
-                        saldo_aux = (float) (saldo_aux - roundOff);
+                        //double roundOff = Math.round(custo * 100.0) / 100.0;
+                        saldo_aux = (saldo_aux - custo);
 
                         linha1 =(TextView) findViewById(R.id.linha1);
-                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ roundOff);
+                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custo);
                         linha2 =(TextView) findViewById(R.id.linha2);
                         linha2.setText("O saldo do seu cartão agora é de R$"+ saldo_aux); //atualiza a interface
                         cliente.setSaldo(saldo_aux);
