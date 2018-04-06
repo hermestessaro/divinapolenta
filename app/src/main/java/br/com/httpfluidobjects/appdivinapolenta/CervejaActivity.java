@@ -439,6 +439,14 @@ public class CervejaActivity extends AppCompatActivity {
     }
 
 
+    //TODO: this function is not enough
+    private void setTexts() {
+        linha1 =(TextView) findViewById(R.id.linha1);
+        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ String.format("%.2f", custo));
+        linha2 =(TextView) findViewById(R.id.linha2);
+        linha2.setText("O saldo do seu cartão agora é de R$"+ String.format("%.2f", saldo_aux)); //atualiza a interface
+    }
+
     public void atualizaInfoPedido() { //pega informações registradas no clp manager e atualiza as a tela
         final Handler mHandler = new Handler();
 
@@ -473,10 +481,16 @@ public class CervejaActivity extends AppCompatActivity {
                         //double roundOff = Math.round(custo * 100.0) / 100.0;
                         saldo_aux = (saldo_aux - custo);
 
+
+                        //TODO: call setTexts function here instead of setting texts
+                        //setTexts();
+
                         linha1 =(TextView) findViewById(R.id.linha1);
                         linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ String.format("%.2f", custo));
                         linha2 =(TextView) findViewById(R.id.linha2);
                         linha2.setText("O saldo do seu cartão agora é de R$"+ String.format("%.2f", saldo_aux)); //atualiza a interface
+
+
                         cliente.setSaldo(saldo_aux);
                         for(int i = 0;i<clientes.size();i++){
                             if(clientes.get(i).getCpf().equals(cliente.getCpf())){
