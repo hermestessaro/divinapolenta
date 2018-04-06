@@ -384,7 +384,7 @@ public class CervejaActivity extends AppCompatActivity {
                 linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + String.format("%.2f", cliente.getSaldo()));
                 linha2 = (TextView) findViewById(R.id.linha2);
                 linha2.setText("Pode se servir");
-                sleep(2000);
+                sleep(8000);
                 if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
                     Log.d("clp", "abriu");
                     setMaxVolume();
@@ -412,7 +412,7 @@ public class CervejaActivity extends AppCompatActivity {
             linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + String.format("%.2f", cliente.getSaldo()));
             linha2 = (TextView) findViewById(R.id.linha2);
             linha2.setText("Pode se servir");
-            sleep(2000);
+            sleep(8000);
             if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
                 Log.d("clp", "abriu");
                 setMaxVolume();
@@ -496,9 +496,9 @@ public class CervejaActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            if(saldo_aux > 1) {
+                            //if(saldo_aux > 1) {
                                 atualizaClienteDrupal(); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
-                            }
+                            //}
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
