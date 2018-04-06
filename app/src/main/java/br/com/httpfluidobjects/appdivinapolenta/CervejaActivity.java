@@ -20,6 +20,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -98,7 +100,7 @@ public class CervejaActivity extends AppCompatActivity {
 
         changedActivity = false;
 
-        //cartao = (EditText) findViewById(R.id.testecartao);
+        //cartao = (EditText) findViewById(R.id.testeCartao);
 
 
 
@@ -387,13 +389,21 @@ public class CervejaActivity extends AppCompatActivity {
             cliente = null;
         }
 
-        Log.d("Cliente: ", cliente.getNome() + " - Cartao: " + idCartao + " - Saldo : " + cliente.getSaldo());
+        //Log.d("Cliente: ", cliente.getNome() + " - Cartao: " + idCartao + " - Saldo : " + cliente.getSaldo());
 
         if(cliente == null) {
             linha1 = (TextView) findViewById(R.id.linha1);
             linha1.setText("Cliente não cadastrado");
-            linha2.setText("");
-            sleep(3000);
+
+            linha2 = (TextView) findViewById(R.id.linha2);
+            linha2.setText(" ");
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
         else {
             Log.d("1", "primeira mensagem");
@@ -417,8 +427,8 @@ public class CervejaActivity extends AppCompatActivity {
                 entrada = "";
             }
 
-//            linha1.setText("Aproxime o cartão");
-//            linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
+            //linha1.setText("Aproxime o cartão");
+            //linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
         }
 
 
@@ -982,8 +992,8 @@ public class CervejaActivity extends AppCompatActivity {
     /*public void simulaCartao(View view){
         try {
 
-            //String numero = cartao.getText().toString();
-            preparesCLP("55A1AEC6");
+            String numero = cartao.getText().toString();
+            preparesCLP(numero);
         } catch (JSONException e) {
             e.printStackTrace();
         }
