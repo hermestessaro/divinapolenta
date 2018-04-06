@@ -122,29 +122,6 @@
             android:layout_marginBottom="-120dp"
             app:srcCompat="@drawable/cerveja01" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/title"
-            android:layout_alignEnd="@+id/title"
-            android:layout_alignRight="@+id/title"
-            android:layout_marginBottom="70dp"
-            android:onClick="simulaCartao"
-            android:text="Button" />
-
-        <EditText
-            android:id="@+id/testecartao"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/title"
-            android:layout_alignStart="@+id/title"
-            android:layout_alignTop="@+id/button"
-            android:layout_marginLeft="21dp"
-            android:layout_marginStart="21dp">
-            </EditText>
-
-
 
     </RelativeLayout>
 

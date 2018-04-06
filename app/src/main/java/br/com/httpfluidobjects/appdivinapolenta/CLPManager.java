@@ -46,8 +46,12 @@ public class CLPManager {
     private boolean finalizaOp;
 
     public CLPManager() {
-        master = new MasterTest("192.168.15.13", 502);
-        //master = new MasterTest("10.0.1.15", 502);
+
+
+        //master = new MasterTest("192.168.15.13", 502);
+
+        master = new MasterTest("10.0.1.15", 502);
+
 
         finalizaOp = false;
     }
@@ -62,7 +66,6 @@ public class CLPManager {
         //chopeira = chopeira - 1;
         Log.d("chopeira", String.valueOf(chopeira));
         int regInicial = 3000 + (chopeira  * 30);
-        //int regInicial = 1;
 
         BATELADA_REG = regInicial + 0; //2999
         STATUS_REG = regInicial + 3;   //3002

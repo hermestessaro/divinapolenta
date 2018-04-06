@@ -84,6 +84,9 @@ public class CervejaActivity extends AppCompatActivity {
 
     EditText cartao;
 
+    //EditText cartao;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +98,9 @@ public class CervejaActivity extends AppCompatActivity {
 
         retriveSavedImage();
 
-        cartao = (EditText) findViewById(R.id.testecartao);
+
+
+        //cartao = (EditText) findViewById(R.id.testecartao);
 
 
         //MUDAR O VALOR DEFAULT
@@ -356,18 +361,20 @@ public class CervejaActivity extends AppCompatActivity {
         Log.d("preparesCLP", "recebeu id do cartao" + idCartao);
         //getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
-        for(int i = 0; i<clientes.size();i++) {
-            if (clientes.get(i).isValid() && idCartao.contains(clientes.get(i).getCartao())) {
-                cliente = clientes.get(i);
-                break;
-
-            }
-            cliente = null;
-        }
+//        for(int i = 0; i<clientes.size();i++) {
+ //           if (clientes.get(i).isValid() && idCartao.contains(clientes.get(i).getCartao())) {
+//                cliente = clientes.get(i);
+//                break;
+//
+  //          }
+//            cliente = null;
+//        }
+        getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
+        Log.d("Cliente: ", cliente.getNome() + " - Cartao: " + idCartao + " - Saldo : " + cliente.getSaldo());
         if(cliente == null) {
             linha2 = (TextView) findViewById(R.id.linha2);
             linha2.setText("Aguarde enquanto seu cadastro é verificado");
-            getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
+            //getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
             if(!cliente.isValid){
                 linha1 = (TextView) findViewById(R.id.linha1);
                 linha1.setText("Cliente não cadastrado");
@@ -378,12 +385,11 @@ public class CervejaActivity extends AppCompatActivity {
                 String nome = cliente.getNome();
                 float saldo = cliente.getSaldo();
                 linha1 = (TextView) findViewById(R.id.linha1);
-                linha1.setText("Olá " + nome + ". Seu saldo é de R$" + saldo);
+
+                linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + String.format("%.2f", cliente.getSaldo()));
                 linha2 = (TextView) findViewById(R.id.linha2);
                 linha2.setText("Pode se servir");
-                ViewGroup vg = findViewById (R.id.activity_cerveja);
-                vg.invalidate();
-                sleep(2000);
+                sleep(8000);
                 if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
                     Log.d("clp", "abriu");
                     setMaxVolume();
@@ -407,6 +413,8 @@ public class CervejaActivity extends AppCompatActivity {
             String nome = cliente.getNome();
             float saldo = cliente.getSaldo();
             linha1 = (TextView) findViewById(R.id.linha1);
+            linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + String.format("%.2f", cliente.getSaldo()));
+
             linha2 = (TextView) findViewById(R.id.linha2);
             try{
                 linha1.setText("Olá " + nome + ". Seu saldo é de R$" + saldo);
@@ -415,7 +423,7 @@ public class CervejaActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             linha2.setText("Pode se servir");
-            sleep(2000);
+            sleep(8000);
             if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
                 Log.d("clp", "abriu");
                 setMaxVolume();
@@ -431,8 +439,7 @@ public class CervejaActivity extends AppCompatActivity {
                 entrada = "";
             }
 
-            //linha1.setText("Aproxime o cartão");
-            //linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
+
         }
 
 
@@ -474,18 +481,19 @@ public class CervejaActivity extends AppCompatActivity {
                     public void run() {
                         saldo_aux = cliente.getSaldo();
                         custo = (ceva.getValor()/100)*volume;
-                        double custoroundOff = Math.round(custo * 100.0) / 100.0;
-                        saldo_aux = (float) (saldo_aux - custoroundOff);
-                        double saldoroundOff = Math.round(saldo_aux * 100.0) / 100.0;
+
+                        //double roundOff = Math.round(custo * 100.0) / 100.0;
+                        saldo_aux = (saldo_aux - custo);
 
                         linha1 =(TextView) findViewById(R.id.linha1);
-                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ custoroundOff);
+                        linha1.setText(cliente.getNome()+", você serviu "+ volume +"ml, valor R$"+ String.format("%.2f", custo));
                         linha2 =(TextView) findViewById(R.id.linha2);
-                        linha2.setText("O saldo do seu cartão agora é de R$"+ saldoroundOff); //atualiza a interface
-                        cliente.setSaldo((float) saldoroundOff);
+                        linha2.setText("O saldo do seu cartão agora é de R$"+ String.format("%.2f", saldo_aux)); //atualiza a interface
+                        cliente.setSaldo(saldo_aux);
+
                         for(int i = 0;i<clientes.size();i++){
                             if(clientes.get(i).getCpf().equals(cliente.getCpf())){
-                                clientes.get(i).setSaldo((float) saldoroundOff);
+                                clientes.get(i).setSaldo(saldo_aux);
                                 break;
                             }
                         }
@@ -500,9 +508,9 @@ public class CervejaActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            if(saldo_aux > 1) {
+                            //if(saldo_aux > 1) {
                                 atualizaClienteDrupal(); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
-                            }
+                            //}
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -966,8 +974,10 @@ public class CervejaActivity extends AppCompatActivity {
 
     public void simulaCartao(View view){
         try {
-            String numero = cartao.getText().toString();
-            preparesCLP(numero);
+
+
+            //String numero = cartao.getText().toString();
+            preparesCLP("55A1AEC6");
         } catch (JSONException e) {
             e.printStackTrace();
         }
