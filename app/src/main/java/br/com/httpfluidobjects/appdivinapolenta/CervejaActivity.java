@@ -79,6 +79,7 @@ public class CervejaActivity extends AppCompatActivity {
     CLPManager clpManager;
     ArrayList<cliente> clientes = new ArrayList<cliente>();
     BluetoothManager bm;
+    boolean changedActivity;
 
 
     //EditText cartao;
@@ -95,6 +96,7 @@ public class CervejaActivity extends AppCompatActivity {
 
         retriveSavedImage();
 
+        changedActivity = false;
 
         //cartao = (EditText) findViewById(R.id.testecartao);
 
@@ -150,10 +152,28 @@ public class CervejaActivity extends AppCompatActivity {
         }
 
 
+        getClientesLoop();
+
+
 
 
     }
 
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changedActivity = false;
+        getClientesLoop();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        changedActivity = true;
+    }
 
 
     //Conecta numa url e baixa a logo da cerveja
@@ -358,61 +378,30 @@ public class CervejaActivity extends AppCompatActivity {
         Log.d("preparesCLP", "recebeu id do cartao" + idCartao);
         //getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
 
-//        for(int i = 0; i<clientes.size();i++) {
- //           if (clientes.get(i).isValid() && idCartao.contains(clientes.get(i).getCartao())) {
-//                cliente = clientes.get(i);
-//                break;
-//
-  //          }
-//            cliente = null;
-//        }
-        getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
+        for(int i = 0; i<clientes.size();i++) {
+            if (clientes.get(i).isValid() && idCartao.contains(clientes.get(i).getCartao())) {
+                cliente = clientes.get(i);
+                break;
+
+            }
+            cliente = null;
+        }
+
         Log.d("Cliente: ", cliente.getNome() + " - Cartao: " + idCartao + " - Saldo : " + cliente.getSaldo());
+
         if(cliente == null) {
-            linha2 = (TextView) findViewById(R.id.linha2);
-            linha2.setText("Aguarde enquanto seu cadastro é verificado");
-            //getJSONClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes", idCartao);
-            if(!cliente.isValid){
-                linha1 = (TextView) findViewById(R.id.linha1);
-                linha1.setText("Cliente não cadastrado");
-                linha2.setText("");
-                sleep(3000);
-            }
-            else
-            {
-                linha1 = (TextView) findViewById(R.id.linha1);
-                linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + String.format("%.2f", cliente.getSaldo()));
-                linha2 = (TextView) findViewById(R.id.linha2);
-                linha2.setText("Pode se servir");
-                sleep(8000);
-                if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
-                    Log.d("clp", "abriu");
-                    setMaxVolume();
-                    Log.d("volumemax", "setou");
-                    monitoraBatelada(); //monitora as informações da batelada
-
-                } else {
-                    Log.d("2", "segunda mensagem");
-                    linha1 = (TextView) findViewById(R.id.linha1);
-                    linha1.setText("Aproxime o cartão");
-                    linha2 = (TextView) findViewById(R.id.linha2);
-                    linha2.setText("se beber não dirija");
-                    entrada = "";
-                }
-
-                linha1.setText("Aproxime o cartão");
-                linha2.setText("Aguarde aparecer seu nome e saldo para se servir");
-            }
-
+            linha1 = (TextView) findViewById(R.id.linha1);
+            linha1.setText("Cliente não cadastrado");
+            linha2.setText("");
+            sleep(3000);
         }
         else {
-
             Log.d("1", "primeira mensagem");
             linha1 = (TextView) findViewById(R.id.linha1);
             linha1.setText("Olá " + cliente.getNome() + ". Seu saldo é de R$" + String.format("%.2f", cliente.getSaldo()));
             linha2 = (TextView) findViewById(R.id.linha2);
             linha2.setText("Pode se servir");
-            sleep(8000);
+            sleep(3000);
             if (clpManager.open(chopeiraId, fator)) { //inicializa os registradores necessários
                 Log.d("clp", "abriu");
                 setMaxVolume();
@@ -853,6 +842,8 @@ public class CervejaActivity extends AppCompatActivity {
             bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
             String json;
+            boolean achou = false;
+            cliente new_client;
 
             while ((json = bufferedReader.readLine()) != null) {
                 sb.append(json + "\n");
@@ -865,27 +856,37 @@ public class CervejaActivity extends AppCompatActivity {
             JSONArray jsonArray = jsonObj.getJSONArray("cliente");
 
             int y = jsonArray.length();
-            int achou = 0;
 
             for (int i = 0; i < y; i++) {
                 JSONObject jsonClienteObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
+                for(int j = 0; j < clientes.size(); j++) {
+                    //se o cliente foi encontrado no array, atualiza o saldo
+                    if (clientes.get(j).getId() == jsonClienteObject.getInt("id")) {
+                        clientes.get(j).setSaldo(Float.parseFloat(jsonClienteObject.getString("saldo")));
+                        achou = true;
+                    }
+                }
+                if(!achou){
+                    new_client = new cliente();
+                    new_client.setCartao(jsonClienteObject.getString("cartao"));
+                    new_client.setCpf(jsonClienteObject.getString("cpf"));
+                    new_client.setId(Integer.parseInt(jsonClienteObject.getString("id")));
+                    new_client.setNome(jsonClienteObject.getString("nome"));
+                    new_client.setSaldo(Float.parseFloat(jsonClienteObject.getString("saldo")));
+                    new_client.setValid(true);
 
-                cliente = new cliente();
-                cliente.setCartao(jsonClienteObject.getString("cartao"));
-                cliente.setCpf(jsonClienteObject.getString("cpf"));
-                cliente.setId(Integer.parseInt(jsonClienteObject.getString("id")));
-                cliente.setNome(jsonClienteObject.getString("nome"));
-                cliente.setSaldo(Float.parseFloat(jsonClienteObject.getString("saldo")));
-                cliente.setValid(true);
-
-                clientes.add(cliente);
-
-
+                    clientes.add(new_client);
+                }
+                achou = false;
             }
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     private void getJSONTodosClientesAssincrono(String url) {
         class GetJSON extends AsyncTask<String, Void, String> {
@@ -928,7 +929,6 @@ public class CervejaActivity extends AppCompatActivity {
                     for (int i = 0; i < y; i++) {
                         JSONObject jsonClienteObject = new JSONObject(jsonArray.getString(i)); //pega o primeiro elemento desse Array, transforma em string e cria um novo objeto
 
-
                         cliente = new cliente();
                         cliente.setCartao(jsonClienteObject.getString("cartao"));
                         cliente.setCpf(jsonClienteObject.getString("cpf"));
@@ -957,6 +957,25 @@ public class CervejaActivity extends AppCompatActivity {
         }
         GetJSON gj = new GetJSON();
         gj.execute(url);
+    }
+
+
+
+
+    private void getClientesLoop() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!changedActivity){
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    getJSONTodosClientesSincrono("http://divinapolenta.cloud.fluidobjects.com/get_clientes");
+                }
+            }
+        }).start();
     }
 
 

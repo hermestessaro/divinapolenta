@@ -138,14 +138,6 @@ public class CLPManager {
 
 
 
-
-
-
-
-
-
-
-
     // - - - - - - - - - - OPERADOR - - - - - - - - - - - //
     void openOp() {
         inicializaEndRegistradores(-1);
