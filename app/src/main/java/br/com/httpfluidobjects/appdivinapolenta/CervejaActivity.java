@@ -163,7 +163,6 @@ public class CervejaActivity extends AppCompatActivity {
 
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -509,9 +508,9 @@ public class CervejaActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            //if(saldo_aux > 1) {
+                            if(saldo_aux > 0) {
                                 atualizaClienteDrupal(); //nid_chopeira, id_chopeira, nid_cerveja, volume_consumido
-                            //}
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -1006,8 +1005,8 @@ public class CervejaActivity extends AppCompatActivity {
     /*public void simulaCartao(View view){
         try {
 
-            String numero = cartao.getText().toString();
-            preparesCLP(numero);
+            //String numero = cartao.getText().toString();
+            preparesCLP("600A3A42");
         } catch (JSONException e) {
             e.printStackTrace();
         }

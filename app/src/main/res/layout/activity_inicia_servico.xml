@@ -121,6 +121,17 @@
         android:textColor="@color/colorWhite"
         android:textSize="15sp" />
 
+    <TextView
+        android:id="@+id/numeroVersao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textsLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="96dp"
+        android:text="@string/numVersao"
+        android:textColor="@android:color/white"
+        android:textSize="20dp" />
+
 
 </RelativeLayout>
 

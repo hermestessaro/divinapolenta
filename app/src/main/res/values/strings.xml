@@ -4,5 +4,6 @@
     <string name="start_screen_second_message">2 - Passe o cartão de operador para iniciar o serviço.</string>
     <string name="linha1_1">Aproxime o cartão</string>
     <string name="linha2_1">Espere aparecer o seu nome e saldo para servir.</string>
-    <string name="linha3_1">Cliente não cadastrado</string>
+    <string name="linha3_1">Cliente não cadastrado</string>\
+    <string name="numVersao">Versão 0.85</string>
 </resources>
